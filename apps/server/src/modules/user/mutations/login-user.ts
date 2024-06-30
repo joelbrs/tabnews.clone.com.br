@@ -1,6 +1,7 @@
 import { GraphQLNonNull, GraphQLString } from "graphql";
 import { mutationWithClientMutationId } from "graphql-relay";
 import { User } from "../user-model";
+import { EntityNotFoundException, UnauthorizedException } from "@/exceptions";
 
 export type LoginUserDtoIn = {
   email: string;
@@ -21,13 +22,13 @@ export const LoginUserMutation = mutationWithClientMutationId({
     const user = await User.findOne({ email });
 
     if (!user) {
-      throw new Error("User not found.");
+      throw new EntityNotFoundException("User");
     }
 
     const passwordMatches = await user.comparePassword(password, user.password);
 
     if (!passwordMatches) {
-      throw new Error("Unauthorized.");
+      throw new UnauthorizedException();
     }
 
     const token = user.generateJwt(user);
