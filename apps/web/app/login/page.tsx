@@ -14,6 +14,8 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { InputPassword } from "../../components";
+import { useMutation } from "react-relay";
+import { LoginUserMutation } from "../../graphql";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -27,8 +29,18 @@ export default function LoginPage(): JSX.Element {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (values: SchemaType) => {
-    console.log(values);
+  const [request] = useMutation(LoginUserMutation);
+
+  const onSubmit = (variables: SchemaType) => {
+    request({
+      variables,
+      onError: (error) => {
+        console.log(error);
+      },
+      onCompleted: (response, errors) => {
+        console.log(response, errors);
+      },
+    });
   };
 
   return (
