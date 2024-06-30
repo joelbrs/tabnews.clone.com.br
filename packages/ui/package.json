@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./button": "./src/button.tsx",
-    "./card": "./src/card.tsx",
-    "./code": "./src/code.tsx"
+    "./components": "./src/components/index.ts",
+    "./tailwind.config.ts": "./tailwind.config.js",
+    "./styles.css": "./app/globals.css"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -24,6 +24,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.399.0",
