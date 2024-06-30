@@ -1,6 +1,7 @@
 import { Document, Model, Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import { env } from "@/config";
+import { sign } from "jsonwebtoken";
 
 export interface IUser extends Document {
   username: string;
@@ -13,6 +14,8 @@ export interface IUser extends Document {
   tabcoins: number;
 
   hashPassword(password: string): Promise<string>;
+  comparePassword(password: string, digest: string): Promise<boolean>;
+  generateJwt(user: IUser): string;
 }
 
 export type UserModel = Model<IUser>;
@@ -67,6 +70,17 @@ UserSchema.methods = {
   hashPassword: (password: string) => {
     return bcrypt.hash(password, env.HASH_SALT);
   },
+  comparePassword(password: string, digest: string) {
+    return bcrypt.compare(password, digest);
+  },
+  generateJwt({ _id: subId, username }: IUser) {
+    const payload = {
+      subId,
+      username,
+    };
+
+    return sign(payload, env.JWT_KEY);
+  },
 };
 
 UserSchema.pre<IUser>("save", async function () {
@@ -75,8 +89,8 @@ UserSchema.pre<IUser>("save", async function () {
   }
 });
 
-UserSchema.pre<IUser>("findOneAndUpdate", function() {
-    this.updated_at = new Date()
-})
+UserSchema.pre<IUser>("findOneAndUpdate", function () {
+  this.updated_at = new Date();
+});
 
 export const User: UserModel = model<IUser, UserModel>("User", UserSchema);
