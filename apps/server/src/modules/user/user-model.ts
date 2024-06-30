@@ -75,4 +75,8 @@ UserSchema.pre<IUser>("save", async function () {
   }
 });
 
+UserSchema.pre<IUser>("findOneAndUpdate", function() {
+    this.updated_at = new Date()
+})
+
 export const User: UserModel = model<IUser, UserModel>("User", UserSchema);
