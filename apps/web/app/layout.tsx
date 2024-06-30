@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
 import "@repo/ui/styles.css";
+import type { Metadata } from "next";
+import { UnloggedHeader } from "../components";
 
 export const metadata: Metadata = {
   title: "TabNews",
@@ -12,6 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
+      <UnloggedHeader />
       <body>{children}</body>
     </html>
   );
