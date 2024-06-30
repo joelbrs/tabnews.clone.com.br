@@ -1,4 +1,6 @@
 import { Document, Model, Schema, model } from "mongoose";
+import bcrypt from "bcrypt";
+import { env } from "@/config";
 
 export interface IUser extends Document {
   username: string;
@@ -9,6 +11,8 @@ export interface IUser extends Document {
   updated_at: Date;
   notify: boolean;
   tabcoins: number;
+
+  hashPassword(password: string): Promise<string>;
 }
 
 export type UserModel = Model<IUser>;
@@ -58,5 +62,17 @@ const UserSchema = new Schema<IUser, UserModel>(
     timestamps: true,
   }
 );
+
+UserSchema.methods = {
+  hashPassword: (password: string) => {
+    return bcrypt.hash(password, env.HASH_SALT);
+  },
+};
+
+UserSchema.pre<IUser>("save", async function () {
+  if (this.isModified("password")) {
+    this.password = await this.hashPassword(this.password);
+  }
+});
 
 export const User: UserModel = model<IUser, UserModel>("User", UserSchema);
