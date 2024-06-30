@@ -27,6 +27,10 @@ const schema = z.object({
 export default function LoginPage(): JSX.Element {
   const form = useForm<SchemaType>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      password: "",
+      username: "",
+    },
   });
 
   const [request] = useMutation(LoginUserMutation);

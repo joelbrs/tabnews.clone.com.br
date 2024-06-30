@@ -36,6 +36,11 @@ export default function CadastroPage(): JSX.Element {
 
   const form = useForm<SchemaType>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      email: "",
+      username: "",
+      password: "",
+    },
   });
 
   const [request] = useMutation(CreateUserMutation);
