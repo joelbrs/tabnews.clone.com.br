@@ -1,4 +1,10 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+import relay from "./relay.config.js";
 
-export default nextConfig;
+/** @type {import('next').NextConfig} */
+export default {
+  reactStrictMode: true,
+  transpilePackages: ["@repo/ui"],
+  compiler: {
+    relay,
+  },
+};
