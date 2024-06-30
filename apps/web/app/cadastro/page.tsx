@@ -17,6 +17,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { InputPassword } from "../../components";
+import { useMutation } from "react-relay";
+import { CreateUserMutation } from "../../graphql";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -36,8 +38,18 @@ export default function CadastroPage(): JSX.Element {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (values: SchemaType): void => {
-    console.log(values);
+  const [request] = useMutation(CreateUserMutation);
+
+  const onSubmit = (variables: SchemaType): void => {
+    request({
+      variables,
+      onError: (error) => {
+        console.log(error);
+      },
+      onCompleted: (response, error) => {
+        console.log(response, error);
+      },
+    });
   };
 
   return (
