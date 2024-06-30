@@ -13,8 +13,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <UnloggedHeader />
-      <body>{children}</body>
+      <body>
+        <UnloggedHeader />
+        {children}
+      </body>
     </html>
   );
 }
