@@ -16,6 +16,7 @@ import { z } from "zod";
 import { InputPassword } from "../../components";
 import { useMutation } from "react-relay";
 import { LoginUserMutation } from "../../graphql";
+import { Footer } from "../../components/footer";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -104,6 +105,7 @@ export default function LoginPage(): JSX.Element {
           <span className="text-blue-500">Clique aqui.</span>
         </p>
       </section>
+      <Footer className="w-[32vw]" />
     </main>
   );
 }
