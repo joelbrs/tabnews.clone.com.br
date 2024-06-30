@@ -1,8 +1,7 @@
 import "@repo/ui/styles.css";
 import type { Metadata } from "next";
+import RelayContainer from "../relay/relay-container";
 import { UnloggedHeader } from "../components";
-import { RelayEnvironmentProvider } from "react-relay";
-import { environment } from "../relay";
 
 export const metadata: Metadata = {
   title: "TabNews",
@@ -15,12 +14,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <RelayEnvironmentProvider environment={environment}>
+      <RelayContainer>
         <body>
           <UnloggedHeader />
           {children}
         </body>
-      </RelayEnvironmentProvider>
+      </RelayContainer>
     </html>
   );
 }
