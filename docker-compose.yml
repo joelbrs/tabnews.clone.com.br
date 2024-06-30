@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  database:
+    image: mongo:latest
+    container_name: tabnews_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=tabnews
+    volumes:
+      - "mongodb_data:/data/db"
+      - "mongodb_config:/data/configdb"
+
+volumes:
+  mongodb_data:
+  mongodb_config:
