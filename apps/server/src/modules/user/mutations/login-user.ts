@@ -24,13 +24,13 @@ export const LoginUserMutation = mutationWithClientMutationId({
       throw new Error("User not found.");
     }
 
-    const passwordMatches = password === user.password;
+    const passwordMatches = await user.comparePassword(password, user.password);
 
     if (!passwordMatches) {
       throw new Error("Unauthorized.");
     }
 
-    const token = "jwt token";
+    const token = user.generateJwt(user);
 
     return {
       userId: user._id,
