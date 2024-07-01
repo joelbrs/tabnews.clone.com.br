@@ -11,7 +11,6 @@ import {
   Input,
   Label,
 } from "@repo/ui/components";
-import { useCookies } from "next-client-cookies";
 import { useForm } from "react-hook-form";
 import { InputPassword, Footer } from "../../components";
 import { useMutation } from "react-relay";
@@ -37,7 +36,6 @@ export default function LoginPage(): JSX.Element {
   });
 
   const router = useRouter();
-  const cookies = useCookies();
 
   const [request] = useMutation(LoginUserMutation);
 
@@ -50,7 +48,7 @@ export default function LoginPage(): JSX.Element {
       onCompleted: (response) => {
         const { token } = (response as loginUserMutation$data).LoginUser;
 
-        cookies.set("tabnews.auth.token", token);
+        localStorage.setItem("tabnews.auth.token", token);
         router.push("/");
       },
     });
