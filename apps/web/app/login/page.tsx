@@ -21,7 +21,7 @@ import { Footer } from "../../components/footer";
 type SchemaType = z.infer<typeof schema>;
 
 const schema = z.object({
-  username: z.string().min(4),
+  email: z.string().email(),
   password: z.string().min(8).max(20),
 });
 
@@ -30,7 +30,7 @@ export default function LoginPage(): JSX.Element {
     resolver: zodResolver(schema),
     defaultValues: {
       password: "",
-      username: "",
+      email: "",
     },
   });
 
@@ -43,6 +43,7 @@ export default function LoginPage(): JSX.Element {
         console.log(error);
       },
       onCompleted: (response, errors) => {
+        console.log(response);
         console.log(response, errors);
       },
     });
@@ -60,10 +61,10 @@ export default function LoginPage(): JSX.Element {
           >
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <Label>Nome de Usuário</Label>
+                  <Label>E-mail</Label>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
