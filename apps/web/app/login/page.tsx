@@ -11,11 +11,14 @@ import {
   Input,
   Label,
 } from "@repo/ui/components";
+import { useCookies } from "next-client-cookies";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { InputPassword, Footer } from "../../components";
 import { useMutation } from "react-relay";
 import { LoginUserMutation } from "../../graphql";
+import { loginUserMutation$data } from "../../graphql/mutations/__generated__/loginUserMutation.graphql";
+import { useRouter } from "next/navigation";
+import { z } from "zod";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -33,6 +36,9 @@ export default function LoginPage(): JSX.Element {
     },
   });
 
+  const router = useRouter();
+  const cookies = useCookies();
+
   const [request] = useMutation(LoginUserMutation);
 
   const onSubmit = (variables: SchemaType) => {
@@ -41,9 +47,11 @@ export default function LoginPage(): JSX.Element {
       onError: (error) => {
         console.log(error);
       },
-      onCompleted: (response, errors) => {
-        console.log(response);
-        console.log(response, errors);
+      onCompleted: (response) => {
+        const { token } = (response as loginUserMutation$data).LoginUser;
+
+        cookies.set("tabnews.auth.token", token);
+        router.push("/");
       },
     });
   };
