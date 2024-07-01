@@ -1,5 +1,5 @@
-import { GetUserQuery as GetUserQuery } from "./get-user";
+import { GetUserQuery as GetUser } from "./get-user";
 
 export const UserQuery = {
-  GetUserQuery,
+  GetUser,
 };
