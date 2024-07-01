@@ -23,7 +23,6 @@ export function UnloggedHeader(): JSX.Element {
               </a>
             </div>
           </div>
-
           <a className={pathnameIsSelected("/recentes")} href="/recentes">
             Recentes
           </a>
