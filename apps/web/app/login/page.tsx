@@ -13,10 +13,9 @@ import {
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { InputPassword } from "../../components";
+import { InputPassword, Footer } from "../../components";
 import { useMutation } from "react-relay";
 import { LoginUserMutation } from "../../graphql";
-import { Footer } from "../../components/footer";
 
 type SchemaType = z.infer<typeof schema>;
 

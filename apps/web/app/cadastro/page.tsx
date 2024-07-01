@@ -16,10 +16,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { InputPassword } from "../../components";
+import { InputPassword, Footer } from "../../components";
 import { useMutation } from "react-relay";
 import { CreateUserMutation } from "../../graphql";
-import { Footer } from "../../components/footer";
 
 type SchemaType = z.infer<typeof schema>;
 
