@@ -12,7 +12,7 @@ export function UnloggedHeader(): JSX.Element {
   };
 
   return (
-    <header className="text-white font-medium text-sm bg-[#161b22] sm:p-3.5 py-6 px-3.5">
+    <header className="text-white font-medium text-sm bg-[#161b22] sm:p-3.5 py-5 px-3.5">
       <div className="flex justify-between items-center">
         <nav className="flex items-center gap-5">
           <div className="space-x-2 hover:cursor-pointer hover:text-zinc-400">
