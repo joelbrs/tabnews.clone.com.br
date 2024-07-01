@@ -11,12 +11,12 @@ export function UnloggedHeader(): JSX.Element {
   };
 
   return (
-    <header className="text-white font-medium text-sm bg-[#161b22] md:p-3.5 py-6 px-3.5">
+    <header className="text-white font-medium text-sm bg-[#161b22] sm:p-3.5 py-6 px-3.5">
       <div className="flex justify-between items-center">
         <nav className="flex items-center gap-5">
           <div className="space-x-2 hover:cursor-pointer hover:text-zinc-400">
             <div className="flex items-center gap-5">
-              <h3 className="hidden md:flex">TabNews</h3>
+              <h3 className="hidden sm:flex">TabNews</h3>
               <a className={pathnameIsSelected("/")} href="/">
                 Relevantes
               </a>
@@ -31,18 +31,18 @@ export function UnloggedHeader(): JSX.Element {
         <div className="flex items-center gap-5">
           <InputSearch />
 
-          <div className="md:hidden">
+          <div className="sm:hidden">
             <a className={pathnameIsSelected("/login")} href="/login">
               Entrar
             </a>
           </div>
 
-          <div className="hidden md:flex">
+          <div className="hidden sm:flex">
             <a className={pathnameIsSelected("/login")} href="/login">
               Login
             </a>
           </div>
-          <div className="hidden md:flex">
+          <div className="hidden sm:flex">
             <a className={pathnameIsSelected("/cadastro")} href="/cadastro">
               Cadastrar
             </a>

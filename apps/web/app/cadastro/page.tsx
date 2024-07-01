@@ -59,7 +59,7 @@ export default function CadastroPage(): JSX.Element {
 
   return (
     <main className="flex flex-col items-center justify-center gap-10 pt-8">
-      <section className="md:w-[32vw] w-full px-2">
+      <section className="sm:w-[32vw] w-full px-2">
         <h1 className="text-3xl font-bold mb-5">Cadastro</h1>
         <Form {...form}>
           <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
