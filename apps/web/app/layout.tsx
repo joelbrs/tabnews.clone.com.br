@@ -2,7 +2,7 @@
 
 import "@repo/ui/styles.css";
 import { RelayContainer } from "../relay";
-import { LoggedHeader, ThemeProvider, UnloggedHeader } from "../components";
+import { HeaderProvider, ThemeProvider } from "../components";
 
 export default function RootLayout({
   children,
@@ -14,8 +14,7 @@ export default function RootLayout({
       <RelayContainer>
         <body>
           <ThemeProvider defaultTheme="dark">
-            {/* <UnloggedHeader /> */}
-            <LoggedHeader />
+            <HeaderProvider />
             {children}
           </ThemeProvider>
         </body>
