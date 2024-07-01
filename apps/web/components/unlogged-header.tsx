@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { InputSearch } from "./input-search";
+import { ToggleTheme } from "./theme-toggle";
 
 export function UnloggedHeader(): JSX.Element {
   const pathname = usePathname();
@@ -30,6 +31,8 @@ export function UnloggedHeader(): JSX.Element {
 
         <div className="flex items-center gap-5">
           <InputSearch />
+
+          <ToggleTheme type="icon" />
 
           <div className="sm:hidden">
             <a className={pathnameIsSelected("/login")} href="/login">
