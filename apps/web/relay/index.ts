@@ -1,2 +1,3 @@
 export * from "./environments";
-export * from "./relay-container";
+
+export { default as RelayContainer } from "./relay-container";
