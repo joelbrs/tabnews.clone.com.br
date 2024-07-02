@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Document, Model, Schema, model } from "mongoose";
 
 export interface IPost extends Document {
@@ -53,5 +54,28 @@ export const PostSchema = new Schema<IPost, PostModel>(
     timestamps: true,
   }
 );
+
+PostSchema.methods = {
+  generateSlug(title: string) {
+    return title
+      ?.toLowerCase()
+      ?.split(" ")
+      ?.join("-")
+      ?.normalize("NFD")
+      ?.replace(/[\u0300-\u036f]/g, "");
+  },
+};
+
+PostSchema.pre<IPost>("save", async function () {
+  if (!this.slug) {
+    const slug = this.generateSlug(this.title);
+    const post = await Post.findOne({ slug });
+
+    if (!post) {
+      return (this.slug = slug);
+    }
+    this.slug = `${slug}-${randomUUID()}`;
+  }
+});
 
 export const Post: PostModel = model<IPost, PostModel>("Post", PostSchema);
