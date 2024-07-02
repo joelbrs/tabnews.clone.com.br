@@ -15,6 +15,7 @@ import {
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Editor } from "@toast-ui/react-editor";
 import { Footer } from "../../components";
 
 type SchemaType = z.infer<typeof schema>;
@@ -73,6 +74,27 @@ export default function PerfilPage(): JSX.Element {
                   <Label>E-mail *</Label>
                   <FormControl>
                     <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <Label>E-mail *</Label>
+                  <FormControl>
+                    <Editor
+                      {...field}
+                      language="pt-BR"
+                      previewStyle="vertical"
+                      previewHighlight={true}
+                      usageStatistics={false}
+                      hideModeSwitch={true}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
