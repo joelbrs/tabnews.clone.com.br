@@ -11,6 +11,7 @@ import {
   FormMessage,
   Input,
   Label,
+  useToast,
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -43,16 +44,25 @@ export default function CadastroPage(): JSX.Element {
     },
   });
 
+  const { toast } = useToast();
+
   const [request] = useMutation(CreateUserMutation);
 
   const onSubmit = (variables: SchemaType): void => {
     request({
       variables,
-      onError: (error) => {
-        console.log(error);
+      onError: () => {
+        toast({
+          title: "Oops! Algo deu errado.",
+          variant: "destructive",
+        });
       },
-      onCompleted: (response, error) => {
-        console.log(response, error);
+      onCompleted: () => {
+        toast({
+          title: "Sucesso!",
+          description: "Salvo com sucesso.",
+          variant: "success",
+        });
       },
     });
   };

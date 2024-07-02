@@ -11,6 +11,7 @@ import {
   FormMessage,
   Input,
   Label,
+  useToast,
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -45,6 +46,8 @@ export default function PerfilPage(): JSX.Element {
     },
   });
 
+  const { toast } = useToast();
+
   const router = useRouter();
 
   useEffect(() => {
@@ -69,11 +72,18 @@ export default function PerfilPage(): JSX.Element {
   const onSubmit = (variables: SchemaType) => {
     request({
       variables,
-      onError: (error) => {
-        console.log(error);
+      onError: () => {
+        toast({
+          title: "Oops! Algo deu errado.",
+          variant: "destructive",
+        });
       },
-      onCompleted: (response) => {
-        console.log(response);
+      onCompleted: () => {
+        toast({
+          title: "Sucesso!",
+          description: "Salvo com sucesso.",
+          variant: "success",
+        });
       },
     });
   };

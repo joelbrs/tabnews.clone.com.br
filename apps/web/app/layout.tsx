@@ -4,6 +4,7 @@ import "@repo/ui/styles.css";
 import "@toast-ui/editor/toastui-editor.css";
 import { RelayContainer } from "../relay";
 import { HeaderProvider, ThemeProvider } from "../components";
+import { Toaster } from "@repo/ui/components";
 
 export default function RootLayout({
   children,
@@ -17,6 +18,7 @@ export default function RootLayout({
           <ThemeProvider defaultTheme="dark">
             <HeaderProvider />
             {children}
+            <Toaster />
           </ThemeProvider>
         </body>
       </RelayContainer>

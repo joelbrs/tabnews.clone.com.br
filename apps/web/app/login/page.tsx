@@ -10,6 +10,7 @@ import {
   FormMessage,
   Input,
   Label,
+  useToast,
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
 import { InputPassword, Footer } from "../../components";
@@ -35,6 +36,8 @@ export default function LoginPage(): JSX.Element {
     },
   });
 
+  const { toast } = useToast();
+
   const router = useRouter();
 
   const [request] = useMutation(LoginUserMutation);
@@ -42,8 +45,11 @@ export default function LoginPage(): JSX.Element {
   const onSubmit = (variables: SchemaType) => {
     request({
       variables,
-      onError: (error) => {
-        console.log(error);
+      onError: () => {
+        toast({
+          title: "Oops! Algo deu errado.",
+          variant: "destructive",
+        });
       },
       onCompleted: (response) => {
         const { token } = (response as loginUserMutation$data).LoginUser;
