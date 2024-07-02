@@ -84,7 +84,7 @@ type Mutation {
   UpdateUser(input: UpdateUserInput!): UserPayload!
   LoginUser(input: LoginUserInput!): LoginUserPayload!
 
-  CreatePost(slug: String!): User!
+  CreatePost(input: CreatePostInput): PostPayload!
   DeletePost(slug: String!): DeletePostPayload!
 }
 
@@ -119,6 +119,10 @@ input CreatePostInput {
   title: String!
   description: String!
   font: String
+}
+
+type PostPayload {
+  post: Post!
 }
 
 type DeletePostPayload {
