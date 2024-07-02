@@ -8,5 +8,9 @@ export default function ThemeProvider({
   children,
   ...props
 }: ThemeProviderProps): JSX.Element {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+  return (
+    <NextThemesProvider {...props} defaultTheme="dark">
+      {children}
+    </NextThemesProvider>
+  );
 }

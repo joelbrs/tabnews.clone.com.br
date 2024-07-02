@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <RelayContainer>
         <body>
-          <ThemeProvider defaultTheme="dark">
+          <ThemeProvider enableSystem attribute="class" defaultTheme="system">
             <HeaderProvider />
             {children}
             <Toaster />

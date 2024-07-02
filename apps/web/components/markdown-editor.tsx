@@ -1,6 +1,7 @@
 "use client";
 
 import { Editor } from "@toast-ui/react-editor";
+import { useTheme } from "next-themes";
 import React, { useEffect, useRef, useState } from "react";
 
 interface Props {
@@ -13,6 +14,8 @@ export default function MarkdownEditor({
   onChange,
 }: Props): JSX.Element {
   const ref = useRef<any>();
+
+  const { theme } = useTheme();
 
   const [key, setKey] = useState(0);
   const [markdown, setMarkdown] = useState();
@@ -34,6 +37,7 @@ export default function MarkdownEditor({
       previewHighlight={true}
       usageStatistics={false}
       hideModeSwitch={true}
+      theme={theme}
       onChange={() => {
         const { current } = ref as any;
         if (!current) return;
