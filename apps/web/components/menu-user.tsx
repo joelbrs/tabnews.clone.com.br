@@ -34,7 +34,12 @@ export function MenuLoggedUser(): JSX.Element {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="hover:cursor-pointer">
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onClick={() => {
+              router.push("/publicar");
+            }}
+          >
             <div className="flex items-center justify-start gap-1 px-2">
               <Plus className="mr-1 h-4 w-4 text-gray-500" />
               <span className="text-sm">Novo conteúdo</span>

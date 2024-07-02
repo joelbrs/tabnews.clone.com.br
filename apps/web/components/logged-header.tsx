@@ -3,7 +3,7 @@
 import { Plus } from "lucide-react";
 import { InputSearch } from "./input-search";
 import { MenuLoggedUser } from ".";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   tabcoins?: number;
@@ -11,6 +11,7 @@ interface Props {
 
 export function LoggedHeader({ tabcoins }: Props): JSX.Element {
   const pathname = usePathname();
+  const router = useRouter();
 
   const pathnameIsSelected = (path: string) => {
     return (pathname === path && "underline underline-offset-4") || "";
@@ -39,7 +40,13 @@ export function LoggedHeader({ tabcoins }: Props): JSX.Element {
             <InputSearch />
           </div>
 
-          <div className="hidden md:flex" title="Publicar novo conteúdo">
+          <div
+            className="hidden md:flex"
+            title="Publicar novo conteúdo"
+            onClick={() => {
+              router.push("/publicar");
+            }}
+          >
             <Plus className="w-5 h-5 hover:cursor-pointer" />
           </div>
 
