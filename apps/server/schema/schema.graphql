@@ -68,6 +68,7 @@ type Post implements Node {
   The ID of an object
   """
   id: ID!
+  title: String!
   description: String!
   createdAt: String
   updatedAt: String
