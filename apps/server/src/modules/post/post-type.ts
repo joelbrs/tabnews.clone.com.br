@@ -14,6 +14,10 @@ export const PostTypeGQL = new GraphQLObjectType<IPost>({
       type: new GraphQLNonNull(GraphQLString),
       description: "Represents post's id",
     },
+    title: {
+      type: new GraphQLNonNull(GraphQLString),
+      description: "Represents post's title",
+    },
     description: {
       type: new GraphQLNonNull(GraphQLString),
       description: "Represents post's description",
