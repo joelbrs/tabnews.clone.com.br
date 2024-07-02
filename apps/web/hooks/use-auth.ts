@@ -1,8 +1,7 @@
 import { fetchQuery } from "relay-runtime";
 import { environment } from "../relay";
 import { GetUserQuery } from "../graphql";
-import { getUserQuery$data } from "../graphql/queries/__generated__/getUserQuery.graphql";
-
+import { getUserQuery$data } from "../graphql/queries/user/__generated__/getUserQuery.graphql";
 export interface User {
   id: string;
   description?: string;
