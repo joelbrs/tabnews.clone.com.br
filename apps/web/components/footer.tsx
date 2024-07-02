@@ -1,4 +1,6 @@
 import { Separator } from "@repo/ui/components";
+import Logo from "../public/tabnews-dark-logo.svg";
+import Image from "next/image";
 
 export function Footer({ className }: { className: string }): JSX.Element {
   return (
@@ -22,7 +24,8 @@ export function Footer({ className }: { className: string }): JSX.Element {
         </div>
 
         <div className="flex items-center justify-center gap-2 text-gray-500">
-          ©{new Date().getFullYear()} TabNews
+          <Image alt="tabnews-log" src={Logo} width={28} height={28} />©
+          {new Date().getFullYear()} TabNews
         </div>
       </footer>
     </div>

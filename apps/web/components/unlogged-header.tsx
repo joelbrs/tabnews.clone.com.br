@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation";
 import { InputSearch } from "./input-search";
 import { ToggleTheme } from "./theme-toggle";
+import Logo from "../public/tabnews-logo.svg";
+import Image from "next/image";
 
 export function UnloggedHeader(): JSX.Element {
   const pathname = usePathname();
@@ -17,6 +19,7 @@ export function UnloggedHeader(): JSX.Element {
         <nav className="flex items-center gap-5">
           <div className="space-x-2 hover:cursor-pointer hover:text-zinc-400">
             <div className="flex items-center gap-5">
+              <Image alt="tabnews-log" src={Logo} width={32} height={32} />
               <h3 className="hidden sm:flex">TabNews</h3>
               <a className={pathnameIsSelected("/")} href="/">
                 Relevantes

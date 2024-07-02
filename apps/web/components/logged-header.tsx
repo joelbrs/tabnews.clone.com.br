@@ -4,6 +4,8 @@ import { Plus } from "lucide-react";
 import { InputSearch } from "./input-search";
 import { MenuLoggedUser } from ".";
 import { usePathname, useRouter } from "next/navigation";
+import Logo from "../public/tabnews-logo.svg";
+import Image from "next/image";
 
 interface Props {
   tabcoins?: number;
@@ -23,6 +25,7 @@ export function LoggedHeader({ tabcoins }: Props): JSX.Element {
         <nav className="flex items-center gap-5">
           <div className="space-x-2 hover:cursor-pointer hover:text-zinc-400">
             <div className="flex items-center gap-5">
+              <Image alt="tabnews-log" src={Logo} width={32} height={32} />
               <h3 className="hidden md:flex">TabNews</h3>
               <a className={pathnameIsSelected("/")} href="/">
                 Relevantes

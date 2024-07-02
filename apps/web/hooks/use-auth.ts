@@ -9,6 +9,7 @@ export interface User {
   notify: boolean;
   tabcoins: number;
   username: string;
+  posts?: any[];
 }
 
 type Response = {
