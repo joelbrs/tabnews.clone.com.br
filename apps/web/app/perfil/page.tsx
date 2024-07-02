@@ -17,10 +17,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Footer } from "../../components";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks";
 import { useMutation } from "react-relay";
 import { UpdateUserMutation } from "../../graphql";
+import { Loader2 } from "lucide-react";
 import MarkdownEditor from "../../components/markdown-editor";
 
 type SchemaType = z.infer<typeof schema>;
@@ -66,6 +67,7 @@ export default function PerfilPage(): JSX.Element {
     getAuth();
   }, [form]);
 
+  const [isLoading, setLoading] = useState(false);
   const [request] = useMutation(UpdateUserMutation);
 
   const onSubmit = (variables: SchemaType) => {
@@ -77,7 +79,18 @@ export default function PerfilPage(): JSX.Element {
           variant: "destructive",
         });
       },
-      onCompleted: () => {
+      onCompleted: (_, errors) => {
+        setLoading(false);
+
+        if (errors?.length) {
+          toast({
+            title: "Atenção",
+            description: errors[0]?.message,
+            variant: "warning",
+          });
+          return;
+        }
+
         toast({
           title: "Sucesso!",
           description: "Salvo com sucesso.",
@@ -177,7 +190,9 @@ export default function PerfilPage(): JSX.Element {
             <Button
               className="w-full mt-3 bg-green-700 hover:bg-green-800 text-white"
               type="submit"
+              disabled={isLoading}
             >
+              {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               Salvar
             </Button>
           </form>

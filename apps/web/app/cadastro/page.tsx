@@ -20,6 +20,7 @@ import { useState } from "react";
 import { InputPassword, Footer } from "../../components";
 import { useMutation } from "react-relay";
 import { CreateUserMutation } from "../../graphql";
+import { Loader2 } from "lucide-react";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -46,6 +47,7 @@ export default function CadastroPage(): JSX.Element {
 
   const { toast } = useToast();
 
+  const [isLoading, setLoading] = useState(false);
   const [request] = useMutation(CreateUserMutation);
 
   const onSubmit = (variables: SchemaType): void => {
@@ -57,7 +59,18 @@ export default function CadastroPage(): JSX.Element {
           variant: "destructive",
         });
       },
-      onCompleted: () => {
+      onCompleted: (_, errors) => {
+        setLoading(false);
+
+        if (errors?.length) {
+          toast({
+            title: "Atenção",
+            description: errors[0]?.message,
+            variant: "warning",
+          });
+          return;
+        }
+
         toast({
           title: "Sucesso!",
           description: "Salvo com sucesso.",
@@ -132,9 +145,10 @@ export default function CadastroPage(): JSX.Element {
 
             <Button
               className="w-full mt-3 bg-green-700 hover:bg-green-800 text-white"
-              disabled={!acceptTerms}
+              disabled={!acceptTerms || isLoading}
               type="submit"
             >
+              {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               Criar cadastro
             </Button>
           </form>
