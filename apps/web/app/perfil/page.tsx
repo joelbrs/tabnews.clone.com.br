@@ -15,10 +15,9 @@ import {
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Editor } from "@toast-ui/react-editor";
 import { Footer } from "../../components";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useAuth } from "../../hooks";
 import { useMutation } from "react-relay";
 import { UpdateUserMutation } from "../../graphql";
