@@ -2,6 +2,7 @@
 
 import "@repo/ui/styles.css";
 import "@toast-ui/editor/toastui-editor.css";
+import "@toast-ui/editor/toastui-editor-viewer.css";
 import "react-tabs/style/react-tabs.css";
 import { RelayContainer } from "../relay";
 import { HeaderProvider, ThemeProvider } from "../components";
