@@ -8,6 +8,9 @@ export const GetUserQuery = graphql`
           id
           username
           email
+          description
+          tabcoins
+          notify
         }
       }
     }

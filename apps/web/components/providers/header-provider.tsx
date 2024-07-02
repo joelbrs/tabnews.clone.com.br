@@ -1,20 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAuth } from "../../hooks";
+import { User, useAuth } from "../../hooks";
 import { UnloggedHeader } from "../unlogged-header";
 import { LoggedHeader } from "../logged-header";
 
 export default function HeaderProvider(): JSX.Element {
   const [isLogged, setIsLogged] = useState(false);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     async function GetAuth() {
-      setIsLogged((await useAuth())?.isLogged);
+      const { isLogged, user } = await useAuth();
+
+      setIsLogged(isLogged);
+      setUser(user);
     }
 
     GetAuth();
   }, [isLogged]);
 
-  return <>{(isLogged && <LoggedHeader />) || <UnloggedHeader />}</>;
+  return (
+    <>
+      {(isLogged && <LoggedHeader tabcoins={user?.tabcoins} />) || (
+        <UnloggedHeader />
+      )}
+    </>
+  );
 }

@@ -3,9 +3,18 @@ import { environment } from "../relay";
 import { GetUserQuery } from "../graphql";
 import { getUserQuery$data } from "../graphql/queries/__generated__/getUserQuery.graphql";
 
+export interface User {
+  id: string;
+  description?: string;
+  email: string;
+  notify: boolean;
+  tabcoins: number;
+  username: string;
+}
+
 type Response = {
   isLogged: boolean;
-  user?: any;
+  user?: User;
 };
 
 export const useAuth = async (): Promise<Response> => {

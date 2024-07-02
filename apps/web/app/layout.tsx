@@ -1,6 +1,7 @@
 "use client";
 
 import "@repo/ui/styles.css";
+import "@toast-ui/editor/toastui-editor.css";
 import { RelayContainer } from "../relay";
 import { HeaderProvider, ThemeProvider } from "../components";
 
