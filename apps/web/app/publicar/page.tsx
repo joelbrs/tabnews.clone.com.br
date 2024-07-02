@@ -19,18 +19,41 @@ import { Footer } from "../../components";
 import { useRouter } from "next/navigation";
 import { useMutation } from "react-relay";
 import { CreatePostMutation } from "../../graphql";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
+import { User, useAuth } from "../../hooks";
 
 type SchemaType = z.infer<typeof schema>;
 
 const schema = z.object({
-  title: z.string(),
-  description: z.string(),
+  title: z.string().min(4),
+  description: z.string().min(5),
   font: z.string().optional(),
 });
 
+function renderWarnFirstPage(isFirst: boolean): JSX.Element {
+  if (!isFirst) return <></>;
+
+  return (
+    <div className="border mb-5 border-yellow-400 dark:border-amber-600 bg-yellow-100 dark:text-white dark:bg-amber-600 px-3 py-3.5 rounded-lg">
+      ⚠ Atenção: Pedimos encarecidamente que{" "}
+      <span className="text-blue-500 hover:cursor-pointer hover:underline">
+        leia isso antes
+      </span>{" "}
+      de fazer sua primeira publicação.
+    </div>
+  );
+}
+
 export default function PublicarPage(): JSX.Element {
+  const [user, setUser] = useState<User>();
+  const [isLoading, setLoading] = useState(false);
+
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const [request] = useMutation(CreatePostMutation);
+
   const form = useForm<SchemaType>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -40,11 +63,13 @@ export default function PublicarPage(): JSX.Element {
     },
   });
 
-  const { toast } = useToast();
-  const router = useRouter();
+  useEffect(() => {
+    async function getAuth() {
+      setUser((await useAuth())?.user);
+    }
 
-  const [isLoading, setLoading] = useState(false);
-  const [request] = useMutation(CreatePostMutation);
+    getAuth();
+  }, [user]);
 
   const onSubmit = (variables: SchemaType) => {
     setLoading(true);
@@ -81,7 +106,8 @@ export default function PublicarPage(): JSX.Element {
 
   return (
     <main className="flex flex-col items-center justify-center gap-10 pt-8">
-      <section className="sm:w-[60vw] w-full px-2">
+      <section className="sm:w-[62vw] w-full px-2">
+        {renderWarnFirstPage(Boolean(user?.posts?.length))}
         <h1 className="text-3xl font-bold mb-5">Publicar novo conteúdo</h1>
 
         <Form {...form}>
@@ -167,7 +193,7 @@ export default function PublicarPage(): JSX.Element {
         </Form>
       </section>
 
-      <Footer className="w-[60vw]" />
+      <Footer className="w-[62vw]" />
     </main>
   );
 }

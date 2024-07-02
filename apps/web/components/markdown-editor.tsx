@@ -15,15 +15,14 @@ export default function MarkdownEditor({
   const ref = useRef<any>();
 
   const [key, setKey] = useState(0);
-  const [markdown, setMarkdown] = useState("");
+  const [markdown, setMarkdown] = useState();
 
   useEffect(() => {
-    if (!markdown) {
+    if (!markdown && props.value) {
       setMarkdown(props.value);
       setKey(key + 1);
     }
   }, [props, markdown]);
-
   return (
     <Editor
       {...props}
