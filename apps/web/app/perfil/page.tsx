@@ -17,10 +17,11 @@ import { z } from "zod";
 import { Editor } from "@toast-ui/react-editor";
 import { Footer } from "../../components";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAuth } from "../../hooks";
 import { useMutation } from "react-relay";
 import { UpdateUserMutation } from "../../graphql";
+import MarkdownEditor from "../../components/markdown-editor";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -119,13 +120,11 @@ export default function PerfilPage(): JSX.Element {
                 <FormItem>
                   <Label>E-mail *</Label>
                   <FormControl>
-                    <Editor
-                      {...field}
-                      language="pt-BR"
-                      previewStyle="vertical"
-                      previewHighlight={true}
-                      usageStatistics={false}
-                      hideModeSwitch={true}
+                    <MarkdownEditor
+                      props={field}
+                      onChange={($event: string) => {
+                        form.setValue("description", $event);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
