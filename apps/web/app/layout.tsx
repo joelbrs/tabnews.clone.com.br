@@ -1,11 +1,8 @@
-import "@repo/ui/styles.css";
-import type { Metadata } from "next";
-import RelayContainer from "../relay/relay-container";
-import { UnloggedHeader } from "../components";
+"use client";
 
-export const metadata: Metadata = {
-  title: "TabNews",
-};
+import "@repo/ui/styles.css";
+import { RelayContainer } from "../relay";
+import { HeaderProvider, ThemeProvider } from "../components";
 
 export default function RootLayout({
   children,
@@ -16,8 +13,10 @@ export default function RootLayout({
     <html lang="pt-BR">
       <RelayContainer>
         <body>
-          <UnloggedHeader />
-          {children}
+          <ThemeProvider defaultTheme="dark">
+            <HeaderProvider />
+            {children}
+          </ThemeProvider>
         </body>
       </RelayContainer>
     </html>

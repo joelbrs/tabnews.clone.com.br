@@ -12,16 +12,17 @@ import {
   Label,
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { InputPassword } from "../../components";
+import { InputPassword, Footer } from "../../components";
 import { useMutation } from "react-relay";
 import { LoginUserMutation } from "../../graphql";
-import { Footer } from "../../components/footer";
+import { loginUserMutation$data } from "../../graphql/mutations/__generated__/loginUserMutation.graphql";
+import { useRouter } from "next/navigation";
+import { z } from "zod";
 
 type SchemaType = z.infer<typeof schema>;
 
 const schema = z.object({
-  username: z.string().min(4),
+  email: z.string().email(),
   password: z.string().min(8).max(20),
 });
 
@@ -30,9 +31,11 @@ export default function LoginPage(): JSX.Element {
     resolver: zodResolver(schema),
     defaultValues: {
       password: "",
-      username: "",
+      email: "",
     },
   });
+
+  const router = useRouter();
 
   const [request] = useMutation(LoginUserMutation);
 
@@ -42,15 +45,18 @@ export default function LoginPage(): JSX.Element {
       onError: (error) => {
         console.log(error);
       },
-      onCompleted: (response, errors) => {
-        console.log(response, errors);
+      onCompleted: (response) => {
+        const { token } = (response as loginUserMutation$data).LoginUser;
+
+        localStorage.setItem("tabnews.auth.token", token);
+        router.push("/");
       },
     });
   };
 
   return (
     <main className="flex flex-col items-center justify-center pt-8 gap-10">
-      <section className="w-[32vw]">
+      <section className="sm:w-[32vw] w-full px-2">
         <h1 className="text-3xl font-bold mb-5">Login</h1>
 
         <Form {...form}>
@@ -60,10 +66,10 @@ export default function LoginPage(): JSX.Element {
           >
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <Label>Nome de Usuário</Label>
+                  <Label>E-mail</Label>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>

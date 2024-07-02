@@ -16,10 +16,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { InputPassword } from "../../components";
+import { InputPassword, Footer } from "../../components";
 import { useMutation } from "react-relay";
 import { CreateUserMutation } from "../../graphql";
-import { Footer } from "../../components/footer";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -60,13 +59,10 @@ export default function CadastroPage(): JSX.Element {
 
   return (
     <main className="flex flex-col items-center justify-center gap-10 pt-8">
-      <section className="w-[32vw]">
+      <section className="sm:w-[32vw] w-full px-2">
         <h1 className="text-3xl font-bold mb-5">Cadastro</h1>
         <Form {...form}>
-          <form
-            className="w-full space-y-3"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
+          <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="username"

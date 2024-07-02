@@ -2,13 +2,13 @@ import { Separator } from "@repo/ui/components";
 
 export function Footer({ className }: { className: string }): JSX.Element {
   return (
-    <div className="flex flex-col justify-center items-center gap-8 w-full mb-8">
-      <Separator className={className} />
+    <div className="flex flex-col justify-center items-center sm:gap-8 gap-6 w-full mb-8">
+      <Separator className={`sm:${className} w-[95vw]`} />
 
       <footer
-        className={`space-y-5 text-center px-5 text-sm text-blue-500 ${className}`}
+        className={`sm:space-y-5 space-y-3 text-center px-5 text-sm text-blue-500 sm:${className} w-[95vw]`}
       >
-        <div className="flex flex-wrap justify-center items-center gap-8">
+        <div className="flex flex-wrap justify-center items-center sm:gap-8 gap-4">
           <a className="" href="/">
             Contato
           </a>

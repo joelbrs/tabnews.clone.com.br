@@ -1,0 +1,62 @@
+"use client";
+
+import { Plus } from "lucide-react";
+import { InputSearch } from "./input-search";
+import { MenuLoggedUser } from ".";
+import { usePathname } from "next/navigation";
+
+export function LoggedHeader(): JSX.Element {
+  const pathname = usePathname();
+
+  const pathnameIsSelected = (path: string) => {
+    return (pathname === path && "underline underline-offset-4") || "";
+  };
+
+  return (
+    <header className="text-white font-medium text-sm bg-[#161b22] sm:p-3.5 py-5 px-3.5">
+      <div className="flex justify-between items-center">
+        <nav className="flex items-center gap-5">
+          <div className="space-x-2 hover:cursor-pointer hover:text-zinc-400">
+            <div className="flex items-center gap-5">
+              <h3 className="hidden md:flex">TabNews</h3>
+              <a className={pathnameIsSelected("/")} href="/">
+                Relevantes
+              </a>
+            </div>
+          </div>
+
+          <a className={pathnameIsSelected("/recentes")} href="/recentes">
+            Recentes
+          </a>
+        </nav>
+
+        <div className="flex items-center gap-3 md:gap-5">
+          <div className="hidden md:flex">
+            <InputSearch />
+          </div>
+
+          <div className="hidden md:flex" title="Publicar novo conteúdo">
+            <Plus className="w-5 h-5 hover:cursor-pointer" />
+          </div>
+
+          <div className="flex items-center gap-1 text-xs font-medium">
+            <div
+              className="bg-blue-700 w-2 h-2 rounded-[2px]"
+              title="TabCoins"
+            />
+            0
+          </div>
+          <div className="flex items-center gap-1 text-xs font-medium">
+            <div
+              className="bg-green-700 w-2 h-2 rounded-[2px]"
+              title="TabCash"
+            />
+            0
+          </div>
+
+          <MenuLoggedUser />
+        </div>
+      </div>
+    </header>
+  );
+}
