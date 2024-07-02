@@ -4,7 +4,7 @@ export const UpdateUserMutation = graphql`
   mutation updateUserMutation(
     $username: String!
     $description: String!
-    $notify: String!
+    $notify: Boolean!
     $email: String!
   ) {
     UpdateUser(

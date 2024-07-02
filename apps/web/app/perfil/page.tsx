@@ -19,6 +19,8 @@ import { Footer } from "../../components";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuth } from "../../hooks";
+import { useMutation } from "react-relay";
+import { UpdateUserMutation } from "../../graphql";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -61,7 +63,19 @@ export default function PerfilPage(): JSX.Element {
     getAuth();
   }, [form]);
 
-  const onSubmit = () => {};
+  const [request] = useMutation(UpdateUserMutation);
+
+  const onSubmit = (variables: SchemaType) => {
+    request({
+      variables,
+      onError: (error) => {
+        console.log(error);
+      },
+      onCompleted: (response) => {
+        console.log(response);
+      },
+    });
+  };
 
   return (
     <main className="flex flex-col items-center justify-center gap-10 pt-8">
