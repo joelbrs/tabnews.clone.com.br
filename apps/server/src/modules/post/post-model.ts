@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { Document, Model, Schema, model } from "mongoose";
+import { User } from "../user";
 
 export interface IPost extends Document {
   title: string;
@@ -15,6 +16,8 @@ export interface IPost extends Document {
 }
 
 export type PostModel = Model<IPost>;
+
+const DEFAULT_TABCOINS_WHEN_POST_IS_CREATED = 5;
 
 export const PostSchema = new Schema<IPost, PostModel>(
   {
@@ -75,6 +78,15 @@ PostSchema.pre<IPost>("save", async function () {
       return (this.slug = slug);
     }
     this.slug = `${slug}-${randomUUID()}`;
+  }
+});
+
+PostSchema.post<IPost>("save", async function () {
+  const user = await User.findOne({ _id: this.creatorId });
+
+  if (user) {
+    user.tabcoins += DEFAULT_TABCOINS_WHEN_POST_IS_CREATED;
+    await user.save();
   }
 });
 
