@@ -13,6 +13,12 @@ import { useRouter } from "next/navigation";
 export function MenuLoggedUser(): JSX.Element {
   const router = useRouter();
 
+  const logOut = () => {
+    localStorage.removeItem("tabnews.auth.token");
+
+    router.push("/login");
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -28,7 +34,12 @@ export function MenuLoggedUser(): JSX.Element {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="hover:cursor-pointer">
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onClick={() => {
+              router.push("/publicar");
+            }}
+          >
             <div className="flex items-center justify-start gap-1 px-2">
               <Plus className="mr-1 h-4 w-4 text-gray-500" />
               <span className="text-sm">Novo conteúdo</span>
@@ -58,7 +69,12 @@ export function MenuLoggedUser(): JSX.Element {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup className="p-2">
-          <DropdownMenuItem className="text-red-600 data-[highlighted]:bg-red-50 dark:data-[highlighted]:bg-red-950 data-[highlighted]:text-red-600 hover:cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => {
+              logOut();
+            }}
+            className="text-red-600 data-[highlighted]:bg-red-50 dark:data-[highlighted]:bg-red-950 data-[highlighted]:text-red-600 hover:cursor-pointer"
+          >
             <LogOut className="w-4 h-4 mr-2" />
             Deslogar
           </DropdownMenuItem>

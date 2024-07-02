@@ -1,9 +1,8 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "../../utils";
 import {
   Button,
-  Checkbox,
   Form,
   FormControl,
   FormField,
@@ -14,63 +13,41 @@ import {
   useToast,
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
-import { z } from "../../utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import MarkdownEditor from "../../components/markdown-editor";
 import { Footer } from "../../components";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useAuth } from "../../hooks";
 import { useMutation } from "react-relay";
-import { UpdateUserMutation } from "../../graphql";
+import { CreatePostMutation } from "../../graphql";
+import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import MarkdownEditor from "../../components/markdown-editor";
 
 type SchemaType = z.infer<typeof schema>;
 
 const schema = z.object({
-  username: z
-    .string()
-    .min(4, "'username' deverá ter, no mínimo, 4 caracteres."),
-  email: z.string().email(),
-  description: z.string().optional(),
-  notify: z.boolean().optional(),
+  title: z.string(),
+  description: z.string(),
+  font: z.string().optional(),
 });
 
-export default function PerfilPage(): JSX.Element {
+export default function PublicarPage(): JSX.Element {
   const form = useForm<SchemaType>({
     resolver: zodResolver(schema),
     defaultValues: {
       description: "",
-      email: "",
-      notify: false,
-      username: "",
+      font: "",
+      title: "",
     },
   });
 
   const { toast } = useToast();
-
   const router = useRouter();
 
-  useEffect(() => {
-    async function getAuth() {
-      const { user } = await useAuth();
-
-      if (!user) {
-        return router.push("/");
-      }
-
-      form.setValue("username", user.username);
-      form.setValue("email", user.email);
-      form.setValue("description", user?.description);
-      form.setValue("notify", user.notify);
-    }
-
-    getAuth();
-  }, [form]);
-
   const [isLoading, setLoading] = useState(false);
-  const [request] = useMutation(UpdateUserMutation);
+  const [request] = useMutation(CreatePostMutation);
 
   const onSubmit = (variables: SchemaType) => {
+    setLoading(true);
     request({
       variables,
       onError: () => {
@@ -78,10 +55,10 @@ export default function PerfilPage(): JSX.Element {
           title: "Oops! Algo deu errado.",
           variant: "destructive",
         });
+        setLoading(false);
       },
       onCompleted: (_, errors) => {
         setLoading(false);
-
         if (errors?.length) {
           toast({
             title: "Atenção",
@@ -96,39 +73,30 @@ export default function PerfilPage(): JSX.Element {
           description: "Salvo com sucesso.",
           variant: "success",
         });
+
+        router.push("/");
       },
     });
   };
 
   return (
     <main className="flex flex-col items-center justify-center gap-10 pt-8">
-      <section className="sm:w-[48vw] w-full px-2">
-        <h1 className="text-3xl font-bold mb-5">Editar Perfil</h1>
+      <section className="sm:w-[60vw] w-full px-2">
+        <h1 className="text-3xl font-bold mb-5">Publicar novo conteúdo</h1>
 
         <Form {...form}>
           <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
-              name="username"
+              name="title"
               render={({ field }) => (
                 <FormItem>
-                  <Label>Nome de Usuário *</Label>
+                  <Label>Título *</Label>
                   <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <Label>E-mail *</Label>
-                  <FormControl>
-                    <Input {...field} />
+                    <Input
+                      placeholder="e.g Como os jogos de Atari eram desenvolvidos"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -140,7 +108,7 @@ export default function PerfilPage(): JSX.Element {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <Label>E-mail *</Label>
+                  <Label>Corpo da publicação *</Label>
                   <FormControl>
                     <MarkdownEditor
                       props={field}
@@ -156,50 +124,50 @@ export default function PerfilPage(): JSX.Element {
 
             <FormField
               control={form.control}
-              name="notify"
+              name="font"
               render={({ field }) => (
                 <FormItem>
+                  <Label>Fonte</Label>
                   <FormControl>
-                    <div className="flex items-center gap-2 mt-5 mb-2">
-                      <Checkbox
-                        {...field}
-                        checked={field.value}
-                        value={`${field.value}`}
-                      />
-                      <Label className="hover:cursor-pointer" htmlFor="terms">
-                        Receber notificações por email
-                      </Label>
-                    </div>
+                    <Input
+                      placeholder="https://origem.site/noticia"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <div className="flex flex-col gap-2 py-2">
-              <Label>Senha</Label>
-              <span className="text-xs hover:underline hover:cursor-pointer text-blue-500">
-                Utilize o fluxo de recuperação de senha →
-              </span>
-            </div>
-
             <span className="text-sm pt-2">
               Os campos marcados com um asterisco (*) são obrigatórios.
             </span>
 
-            <Button
-              className="w-full mt-3 bg-green-700 hover:bg-green-800 text-white"
-              type="submit"
-              disabled={isLoading}
-            >
-              {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Salvar
-            </Button>
+            <div className="w-full flex justify-end gap-3">
+              <Button
+                className="mt-3 h-8 px-8"
+                variant="ghost"
+                type="reset"
+                onClick={() => {
+                  router.push("/");
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                className="mt-3 bg-green-700 hover:bg-green-800 text-white h-8 px-8"
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                Salvar
+              </Button>
+            </div>
           </form>
         </Form>
       </section>
 
-      <Footer className="w-[48vw]" />
+      <Footer className="w-[60vw]" />
     </main>
   );
 }

@@ -11,24 +11,23 @@ import {
   FormMessage,
   Input,
   Label,
+  useToast,
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { z } from "../../utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { InputPassword, Footer } from "../../components";
 import { useMutation } from "react-relay";
 import { CreateUserMutation } from "../../graphql";
+import { Loader2 } from "lucide-react";
 
 type SchemaType = z.infer<typeof schema>;
 
 const schema = z.object({
-  username: z.string().min(4, "'username' deverá ter, no mínimo, 4 caracteres"),
-  email: z.string().email("E-mail inválido."),
-  password: z
-    .string()
-    .min(8, "'password' deverá ter, no mínimo, 8 caracteres")
-    .max(20),
+  username: z.string().min(4),
+  email: z.string().email(),
+  password: z.string().min(8).max(20),
 });
 
 export default function CadastroPage(): JSX.Element {
@@ -43,16 +42,37 @@ export default function CadastroPage(): JSX.Element {
     },
   });
 
+  const { toast } = useToast();
+
+  const [isLoading, setLoading] = useState(false);
   const [request] = useMutation(CreateUserMutation);
 
   const onSubmit = (variables: SchemaType): void => {
     request({
       variables,
-      onError: (error) => {
-        console.log(error);
+      onError: () => {
+        toast({
+          title: "Oops! Algo deu errado.",
+          variant: "destructive",
+        });
       },
-      onCompleted: (response, error) => {
-        console.log(response, error);
+      onCompleted: (_, errors) => {
+        setLoading(false);
+
+        if (errors?.length) {
+          toast({
+            title: "Atenção",
+            description: errors[0]?.message,
+            variant: "warning",
+          });
+          return;
+        }
+
+        toast({
+          title: "Sucesso!",
+          description: "Salvo com sucesso.",
+          variant: "success",
+        });
       },
     });
   };
@@ -122,9 +142,10 @@ export default function CadastroPage(): JSX.Element {
 
             <Button
               className="w-full mt-3 bg-green-700 hover:bg-green-800 text-white"
-              disabled={!acceptTerms}
+              disabled={!acceptTerms || isLoading}
               type="submit"
             >
+              {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               Criar cadastro
             </Button>
           </form>
