@@ -6,3 +6,6 @@ export * from "./checkbox";
 export * from "./separator";
 export * from "./tabs";
 export * from "./dropdown-menu";
+export * from "./toast";
+export * from "./toaster";
+export * from "./use-toast";
