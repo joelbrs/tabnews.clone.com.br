@@ -16,11 +16,11 @@ import { useForm } from "react-hook-form";
 import { InputPassword, Footer } from "../../components";
 import { useMutation } from "react-relay";
 import { LoginUserMutation } from "../../graphql";
-import { loginUserMutation$data } from "../../graphql/mutations/__generated__/loginUserMutation.graphql";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { z } from "zod";
+import { z } from "../../utils";
 import { useState } from "react";
+import { loginUserMutation$data } from "../../graphql/mutations/user/__generated__/loginUserMutation.graphql";
 
 type SchemaType = z.infer<typeof schema>;
 

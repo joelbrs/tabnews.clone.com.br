@@ -14,7 +14,7 @@ import {
   useToast,
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { z } from "../../utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { InputPassword, Footer } from "../../components";
@@ -25,12 +25,9 @@ import { Loader2 } from "lucide-react";
 type SchemaType = z.infer<typeof schema>;
 
 const schema = z.object({
-  username: z.string().min(4, "'username' deverá ter, no mínimo, 4 caracteres"),
-  email: z.string().email("E-mail inválido."),
-  password: z
-    .string()
-    .min(8, "'password' deverá ter, no mínimo, 8 caracteres")
-    .max(20),
+  username: z.string().min(4),
+  email: z.string().email(),
+  password: z.string().min(8).max(20),
 });
 
 export default function CadastroPage(): JSX.Element {

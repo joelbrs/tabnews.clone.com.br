@@ -14,7 +14,7 @@ import {
   useToast,
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { z } from "../../utils";
 import { Footer } from "../../components";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
