@@ -1,11 +1,13 @@
 import {
   GraphQLBoolean,
   GraphQLInt,
+  GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
 } from "graphql";
 import { IUser } from "./user-model";
+import { Post, PostTypeGQL } from "../post";
 
 export const UserTypeGQL = new GraphQLObjectType<IUser>({
   name: "User",
@@ -46,6 +48,14 @@ export const UserTypeGQL = new GraphQLObjectType<IUser>({
     updatedAt: {
       type: GraphQLString,
       description: "Represents post's last update date",
+    },
+    posts: {
+      type: new GraphQLList(new GraphQLNonNull(PostTypeGQL)),
+      description: "Represents user's post",
+      resolve: async ({ _id: creatorId }) => {
+        const posts = await Post.find({ creatorId });
+        return posts;
+      },
     },
   }),
 });
