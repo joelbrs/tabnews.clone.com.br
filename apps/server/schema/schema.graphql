@@ -98,11 +98,12 @@ type UserPayload {
 input UpdateUserInput {
   username: String
   description: String
+  email: String
   notify: Boolean
 }
 
 input LoginUserInput {
-  username: String!
+  email: String!
   password: String!
 }
 
