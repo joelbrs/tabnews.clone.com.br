@@ -13,6 +13,12 @@ import { useRouter } from "next/navigation";
 export function MenuLoggedUser(): JSX.Element {
   const router = useRouter();
 
+  const logOut = () => {
+    localStorage.removeItem("tabnews.auth.token");
+
+    router.push("/login");
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -58,7 +64,12 @@ export function MenuLoggedUser(): JSX.Element {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup className="p-2">
-          <DropdownMenuItem className="text-red-600 data-[highlighted]:bg-red-50 dark:data-[highlighted]:bg-red-950 data-[highlighted]:text-red-600 hover:cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => {
+              logOut();
+            }}
+            className="text-red-600 data-[highlighted]:bg-red-50 dark:data-[highlighted]:bg-red-950 data-[highlighted]:text-red-600 hover:cursor-pointer"
+          >
             <LogOut className="w-4 h-4 mr-2" />
             Deslogar
           </DropdownMenuItem>
