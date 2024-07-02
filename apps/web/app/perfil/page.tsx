@@ -6,7 +6,6 @@ import {
   Checkbox,
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormMessage,
@@ -17,6 +16,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Editor } from "@toast-ui/react-editor";
 import { Footer } from "../../components";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useAuth } from "../../hooks";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -40,11 +42,30 @@ export default function PerfilPage(): JSX.Element {
     },
   });
 
+  const router = useRouter();
+
+  useEffect(() => {
+    async function getAuth() {
+      const { user } = await useAuth();
+
+      if (!user) {
+        return router.push("/");
+      }
+
+      form.setValue("username", user.username);
+      form.setValue("email", user.email);
+      form.setValue("description", user?.description);
+      form.setValue("notify", user.notify);
+    }
+
+    getAuth();
+  }, [form]);
+
   const onSubmit = () => {};
 
   return (
     <main className="flex flex-col items-center justify-center gap-10 pt-8">
-      <section className="sm:w-[50vw] w-full px-2">
+      <section className="sm:w-[48vw] w-full px-2">
         <h1 className="text-3xl font-bold mb-5">Editar Perfil</h1>
 
         <Form {...form}>
@@ -59,9 +80,6 @@ export default function PerfilPage(): JSX.Element {
                     <Input {...field} />
                   </FormControl>
                   <FormMessage />
-                  <FormDescription className="text-xs text-muted-foreground">
-                    Esse nome será exibido publicamente.
-                  </FormDescription>
                 </FormItem>
               )}
             />
@@ -104,15 +122,14 @@ export default function PerfilPage(): JSX.Element {
             <FormField
               control={form.control}
               name="notify"
-              render={() => (
+              render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <div className="flex items-center gap-2 mt-5 mb-2">
                       <Checkbox
-                        id="notification"
-                        onCheckedChange={($event: boolean) => {
-                          form.setValue("notify", $event);
-                        }}
+                        {...field}
+                        checked={field.value}
+                        value={`${field.value}`}
                       />
                       <Label className="hover:cursor-pointer" htmlFor="terms">
                         Receber notificações por email
@@ -145,7 +162,7 @@ export default function PerfilPage(): JSX.Element {
         </Form>
       </section>
 
-      <Footer className="w-[50vw]" />
+      <Footer className="w-[48vw]" />
     </main>
   );
 }
