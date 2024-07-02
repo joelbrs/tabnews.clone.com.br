@@ -3,7 +3,7 @@ import { environment } from "../relay";
 import { GetUserQuery } from "../graphql";
 import { getUserQuery$data } from "../graphql/queries/__generated__/getUserQuery.graphql";
 
-interface User {
+export interface User {
   id: string;
   description?: string;
   email: string;

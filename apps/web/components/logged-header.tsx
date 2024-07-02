@@ -5,7 +5,11 @@ import { InputSearch } from "./input-search";
 import { MenuLoggedUser } from ".";
 import { usePathname } from "next/navigation";
 
-export function LoggedHeader(): JSX.Element {
+interface Props {
+  tabcoins?: number;
+}
+
+export function LoggedHeader({ tabcoins }: Props): JSX.Element {
   const pathname = usePathname();
 
   const pathnameIsSelected = (path: string) => {
@@ -39,14 +43,20 @@ export function LoggedHeader(): JSX.Element {
             <Plus className="w-5 h-5 hover:cursor-pointer" />
           </div>
 
-          <div className="flex items-center gap-1 text-xs font-medium">
+          <div
+            className="flex items-center gap-1 text-xs font-medium"
+            title="TabCoins"
+          >
             <div
               className="bg-blue-700 w-2 h-2 rounded-[2px]"
               title="TabCoins"
             />
-            0
+            {tabcoins}
           </div>
-          <div className="flex items-center gap-1 text-xs font-medium">
+          <div
+            className="flex items-center gap-1 text-xs font-medium"
+            title="TabCash"
+          >
             <div
               className="bg-green-700 w-2 h-2 rounded-[2px]"
               title="TabCash"
