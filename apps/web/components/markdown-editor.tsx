@@ -34,7 +34,7 @@ export default function MarkdownEditor({
       language="pt-BR"
       initialValue={markdown}
       previewStyle="vertical"
-      previewHighlight={true}
+      previewHighlight={false}
       usageStatistics={false}
       hideModeSwitch={true}
       theme={theme}
