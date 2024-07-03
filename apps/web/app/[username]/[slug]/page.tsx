@@ -38,7 +38,7 @@ export default function PostPage(): JSX.Element {
     <main className="space-y-10">
       <section className="flex items-start justify-center my-6">
         <VotePost post={post} />
-        <div className="flex flex-col items-center justify-center sm:w-[60vw]">
+        <div className="flex flex-col items-center justify-center sm:w-[55vw]">
           <div className="flex items-center justify-start gap-2 self-start px-2 text-xs mb-1">
             <Link
               href={`/${post?.user.username}`}
@@ -51,15 +51,17 @@ export default function PostPage(): JSX.Element {
             </span>
           </div>
           <div className="flex flex-col items-center justify-start gap-3">
-            <h1 className="text-3xl self-start font-medium px-2 mb-1">
+            <h1 className="text-3xl font-medium self-start px-2 mb-1 leading-relaxed">
               {post?.title}
             </h1>
 
-            <div className="justify-center pr-5 pl-2 sm:w-[60vw]">
+            <div className="justify-center pr-5 pl-2 sm:w-[55vw]">
               <MarkdownPreview
                 source={post?.description}
                 style={
-                  theme === "light" ? { background: "#FFF", color: "#000" } : {}
+                  theme === "light"
+                    ? { background: "#FFF", color: "#000" }
+                    : { backgroundColor: "#020817" }
                 }
               />
             </div>

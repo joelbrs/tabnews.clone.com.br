@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <RelayContainer>
-        <body>
+        <body className="font-sans">
           <ThemeProvider enableSystem attribute="class" defaultTheme="system">
             <HeaderProvider />
             {children}
