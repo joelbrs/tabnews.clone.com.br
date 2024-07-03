@@ -14,6 +14,7 @@
     "@repo/ui": "workspace:*",
     "@toast-ui/editor": "^3.2.2",
     "@toast-ui/react-editor": "^3.2.3",
+    "@uiw/react-markdown-preview": "^5.1.2",
     "lucide-react": "^0.399.0",
     "next": "15.0.0-rc.0",
     "next-themes": "^0.3.0",

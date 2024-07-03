@@ -6,12 +6,14 @@ import { MenuLoggedUser } from ".";
 import { usePathname, useRouter } from "next/navigation";
 import Logo from "../public/tabnews-logo.svg";
 import Image from "next/image";
+import Link from "next/link";
+import { User } from "../hooks";
 
 interface Props {
-  tabcoins?: number;
+  user: User;
 }
 
-export function LoggedHeader({ tabcoins }: Props): JSX.Element {
+export function LoggedHeader({ user }: Props): JSX.Element {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -24,18 +26,16 @@ export function LoggedHeader({ tabcoins }: Props): JSX.Element {
       <div className="flex justify-between items-center">
         <nav className="flex items-center gap-5">
           <div className="space-x-2 hover:cursor-pointer hover:text-zinc-400">
-            <div className="flex items-center gap-5">
+            <Link className="flex items-center gap-5" href="/">
               <Image alt="tabnews-log" src={Logo} width={32} height={32} />
               <h3 className="hidden md:flex">TabNews</h3>
-              <a className={pathnameIsSelected("/")} href="/">
-                Relevantes
-              </a>
-            </div>
+              <span className={pathnameIsSelected("/")}>Relevantes</span>
+            </Link>
           </div>
 
-          <a className={pathnameIsSelected("/recentes")} href="/recentes">
+          <Link className={pathnameIsSelected("/recentes")} href="/recentes">
             Recentes
-          </a>
+          </Link>
         </nav>
 
         <div className="flex items-center gap-3 md:gap-5">
@@ -61,7 +61,7 @@ export function LoggedHeader({ tabcoins }: Props): JSX.Element {
               className="bg-blue-700 w-2 h-2 rounded-[2px]"
               title="TabCoins"
             />
-            {tabcoins}
+            {user.tabcoins}
           </div>
           <div
             className="flex items-center gap-1 text-xs font-medium"
@@ -74,7 +74,7 @@ export function LoggedHeader({ tabcoins }: Props): JSX.Element {
             0
           </div>
 
-          <MenuLoggedUser />
+          <MenuLoggedUser user={user} />
         </div>
       </div>
     </header>

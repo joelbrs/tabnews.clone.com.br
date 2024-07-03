@@ -23,7 +23,7 @@ type Query {
   ): [Node]!
 
   GetUser(username: String): UserConnection!
-  GetPosts(page: Int, limit: Int): PostConnection!
+  GetPosts(page: Int, limit: Int, slug: String): PostConnection!
 }
 
 """

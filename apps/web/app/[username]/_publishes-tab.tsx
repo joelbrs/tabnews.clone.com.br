@@ -36,8 +36,11 @@ export function PublishesTab({ posts }: Props): JSX.Element {
 
   return (
     <>
-      {!posts ||
-        (!posts.length && RenderPublishesNotFound(router)) || (<PublishCard posts={posts}/>)}
+      {!posts || (!posts.length && RenderPublishesNotFound(router)) || (
+        <div className="space-y-2">
+          <PublishCard posts={posts} />
+        </div>
+      )}
     </>
   );
 }
