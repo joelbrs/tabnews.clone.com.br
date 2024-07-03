@@ -5,6 +5,7 @@ export const GetUserPostsQuery = graphql`
     GetUser(username: $username) {
       edges {
         node {
+          id
           username
           description
           tabcoins
