@@ -53,7 +53,12 @@ export function MenuLoggedUser({ user }: Props): JSX.Element {
               <span className="text-sm">Novo conteúdo</span>
             </div>
           </DropdownMenuItem>
-          <DropdownMenuItem className="hover:cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => {
+              router.push(`/${user?.username}?conteudo=true`);
+            }}
+            className="hover:cursor-pointer"
+          >
             <div className="flex items-center justify-start gap-1 px-2">
               <List className="mr-1 h-4 w-4 text-gray-500" />
               <span className="text-sm">Meus conteúdos</span>

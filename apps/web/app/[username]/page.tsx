@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { fetchQuery } from "relay-runtime";
@@ -15,7 +15,9 @@ import { PublishesTab } from "./_publishes-tab";
 export default function PerfilPage(): JSX.Element {
   const [user, setUser] = useState<User>();
   const [tab, setTab] = useState(0);
+  const [key, setKey] = useState(0);
 
+  const params = useSearchParams();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -26,6 +28,11 @@ export default function PerfilPage(): JSX.Element {
 
       const { edges } = (data as getUserPostsQuery$data).GetUser;
       setUser(Array.isArray(edges) ? edges[0].node : undefined);
+    }
+
+    if (params.get("conteudo")) {
+      setTab(1);
+      setKey(key + 1);
     }
 
     getPosts();
@@ -40,7 +47,12 @@ export default function PerfilPage(): JSX.Element {
           {/** Settings Component */}
         </div>
 
-        <Tabs className="w-full" onSelect={(tab) => setTab(tab)}>
+        <Tabs
+          className="w-full"
+          defaultIndex={tab}
+          key={key}
+          onSelect={(tab) => setTab(tab)}
+        >
           <TabList>
             <Tab>Perfil</Tab>
             <Tab>
