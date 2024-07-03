@@ -24,11 +24,12 @@ export default function Page(): JSX.Element {
       }).toPromise();
 
       const { edges, pageInfo } = (data as getPostsQuery$data).GetPosts;
-      setPosts(Array.isArray(edges) ? edges?.map((item) => item?.node) : []);
-      setPagination({
-        page: pagination.page,
-        hasNextPage: pageInfo.hasNextPage,
-      });
+
+      const posts = Array.isArray(edges) && edges?.map((item) => item?.node);
+      const page = { page: pagination.page, hasNextPage: pageInfo.hasNextPage };
+
+      setPosts(posts || []);
+      setPagination(page);
     }
 
     getPosts();

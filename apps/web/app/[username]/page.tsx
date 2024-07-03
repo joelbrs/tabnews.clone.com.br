@@ -29,11 +29,11 @@ function RenderEditProfile(
       {isSameUser && (
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <div className="border rounded-lg p-1 bg-slate-100">
+            <div className="border rounded-lg p-1 bg-slate-100 dark:text-black">
               <MoreHorizontal className="w-4 h-4 hover:cursor-pointer" />
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="relative left-20 w-48 rounded-xl">
+          <DropdownMenuContent className="relative sm:left-20 w-48 rounded-xl">
             <DropdownMenuItem
               onClick={() => {
                 router.push("/perfil");
