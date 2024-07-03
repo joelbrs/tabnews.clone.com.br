@@ -23,7 +23,9 @@ function RenderPublishesNotFound(
       <h3 className="text-xl font-medium">Nenhuma publicação encontrada</h3>
       {(idLoggedUser === id && (
         <>
-          <span>Você ainda não fez nenhuma publicação.</span>
+          <span className="text-center">
+            Você ainda não fez nenhuma publicação.
+          </span>
           <Button
             className="h-8 mt-2"
             variant="outline"
@@ -35,7 +37,11 @@ function RenderPublishesNotFound(
             Publicar Conteúdo
           </Button>
         </>
-      )) || <span>{username} ainda não fez nenhuma publicação</span>}
+      )) || (
+        <span className="text-center">
+          {username} ainda não fez nenhuma publicação
+        </span>
+      )}
     </div>
   );
 }

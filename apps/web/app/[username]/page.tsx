@@ -1,5 +1,12 @@
 "use client";
 
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@repo/ui/components";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
@@ -11,13 +18,7 @@ import { User } from "../../hooks";
 import { environment } from "../../relay";
 import { ProfileTab } from "./_profile-tab";
 import { PublishesTab } from "./_publishes-tab";
-import { Settings, MoreHorizontal } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@repo/ui/components";
+import { Settings, MoreHorizontal, User as UserIcon, Plus } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 function RenderEditProfile(
@@ -111,6 +112,7 @@ export default function PerfilPage(): JSX.Element {
                 <></>
               )}
             </Tab>
+            <Tab>Comentários</Tab>
           </TabList>
 
           <TabPanel>
@@ -118,6 +120,23 @@ export default function PerfilPage(): JSX.Element {
           </TabPanel>
           <TabPanel>
             <PublishesTab user={user} />
+          </TabPanel>
+          <TabPanel>
+            <div className="flex flex-col gap-2 items-center justify-center mt-10">
+              <UserIcon className="w-10 h-10" />
+              <h3 className="text-xl font-medium">
+                Nenhum comentário encontrado
+              </h3>
+              {(isSameUser() && (
+                <span className="text-center">
+                  Você ainda não fez nenhum comentário.
+                </span>
+              )) || (
+                <span className="text-center">
+                  {user?.username} ainda não fez nenhum comentário.
+                </span>
+              )}
+            </div>
           </TabPanel>
         </Tabs>
       </div>
