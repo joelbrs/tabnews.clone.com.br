@@ -51,7 +51,7 @@ export default function PostPage(): JSX.Element {
             </span>
           </div>
           <div className="flex flex-col items-center justify-start gap-3">
-            <h1 className="text-3xl font-medium self-start px-2 mb-1 leading-relaxed">
+            <h1 className="text-3xl font-medium self-start px-2 mb-1 leading-relaxed sm:leading-normal">
               {post?.title}
             </h1>
 
