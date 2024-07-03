@@ -7,6 +7,7 @@ export const GetUserPostsQuery = graphql`
         node {
           username
           description
+          tabcoins
           posts {
             id
             title
