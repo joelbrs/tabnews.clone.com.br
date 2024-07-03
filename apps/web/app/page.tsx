@@ -37,7 +37,7 @@ export default function Page(): JSX.Element {
 
   return (
     <main className="flex flex-col items-center justify-center py-8 gap-10">
-      <div className="flex flex-col sm:items-start sm:justify-start gap-3 pb-5 sm:pb-3.5 sm:w-[70vw] px-2">
+      <div className="flex flex-col sm:items-start sm:justify-start gap-3 pb-5 sm:pb-3.5 sm:w-[60vw] px-2">
         <PublishCard posts={posts} />
 
         <div className="self-center">
@@ -53,7 +53,7 @@ export default function Page(): JSX.Element {
         </div>
       </div>
 
-      <Footer className="w-[70vw]" />
+      <Footer className="w-[60vw]" />
     </main>
   );
 }
