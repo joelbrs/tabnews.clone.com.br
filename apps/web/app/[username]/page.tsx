@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { fetchQuery } from "relay-runtime";
@@ -16,12 +16,12 @@ export default function PerfilPage(): JSX.Element {
   const [user, setUser] = useState<User>();
   const [tab, setTab] = useState(0);
 
-  const params = useSearchParams();
+  const pathname = usePathname();
 
   useEffect(() => {
     async function getPosts() {
       const data = await fetchQuery(environment, GetUserPostsQuery, {
-        username: params.get("username"),
+        username: pathname?.replace("/", ""),
       }).toPromise();
 
       const { edges } = (data as getUserPostsQuery$data).GetUser;
@@ -29,13 +29,13 @@ export default function PerfilPage(): JSX.Element {
     }
 
     getPosts();
-  }, [params.get("username")]);
+  }, [pathname]);
 
   return (
     <div className="flex flex-col items-center gap-10 pt-8 pb-3.5">
       <div className="sm:w-[50vw] w-full px-2 space-y-3">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold mb-2">joelf</h1>
+          <h1 className="text-3xl font-bold mb-2">{user?.username}</h1>
 
           {/** Settings Component */}
         </div>
