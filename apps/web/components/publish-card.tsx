@@ -12,7 +12,7 @@ export default function PublishCard({ posts }: Props): JSX.Element {
           <span>{i + 1}.</span>
           <div>
             <Link
-              className="hover:underline font-medium capitalize"
+              className="hover:underline font-medium capitalize text-wrap"
               href={`${item.user.username}/${item.slug}`}
               key={item.id}
             >
