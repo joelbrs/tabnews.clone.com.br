@@ -47,7 +47,7 @@ export const PostTypeGQL = new GraphQLObjectType<IPost>({
       type: new GraphQLNonNull(UserTypeGQL),
       description: "Represents post's creator",
       resolve: async ({ creatorId: _id }) => {
-        const user = await User.findOne({ _id: "6684a63fb3f2c37e0faae126" });
+        const user = await User.findOne({ _id });
         return user;
       },
     },
