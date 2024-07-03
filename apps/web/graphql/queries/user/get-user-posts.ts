@@ -6,11 +6,13 @@ export const GetUserPostsQuery = graphql`
       edges {
         node {
           username
+          description
           posts {
             id
             title
             slug
             createdAt
+            tabcoins
           }
         }
       }

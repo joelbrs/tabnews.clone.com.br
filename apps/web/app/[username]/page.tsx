@@ -1,29 +1,38 @@
 "use client";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import { ProfileTab } from "./_profile-tab";
+
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { User, useAuth } from "../../hooks";
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import { fetchQuery } from "relay-runtime";
 import { Footer } from "../../components";
-import { Button } from "@repo/ui/components";
-import { User as UserIcon, Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { GetUserPostsQuery } from "../../graphql";
+import { getUserPostsQuery$data } from "../../graphql/queries/user/__generated__/getUserPostsQuery.graphql";
+import { User } from "../../hooks";
+import { environment } from "../../relay";
+import { ProfileTab } from "./_profile-tab";
+import { PublishesTab } from "./_publishes-tab";
 
 export default function PerfilPage(): JSX.Element {
   const [user, setUser] = useState<User>();
 
-  const router = useRouter();
+  const params = useSearchParams();
 
   useEffect(() => {
-    async function getAuth() {
-      setUser((await useAuth())?.user);
+    async function getPosts() {
+      const data = await fetchQuery(environment, GetUserPostsQuery, {
+        username: params.get("username"),
+      }).toPromise();
+
+      const { edges } = (data as getUserPostsQuery$data).GetUser;
+      setUser(Array.isArray(edges) ? edges[0].node : undefined);
     }
 
-    getAuth();
-  }, [user]);
+    getPosts();
+  }, [params.get("username")]);
 
   return (
     <div className="flex flex-col items-center gap-10 pt-8 pb-3.5">
-      <div className="sm:w-[60vw] w-full px-2 space-y-3">
+      <div className="sm:w-[50vw] w-full px-2 space-y-3">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold mb-2">joelf</h1>
 
@@ -33,36 +42,24 @@ export default function PerfilPage(): JSX.Element {
         <Tabs className="w-full">
           <TabList>
             <Tab>Perfil</Tab>
-            <Tab>Publicações</Tab>
+            <Tab>
+              Publicações{" "}
+              <span className="text-xs px-2 bg-slate-200 rounded-full font-bold">
+                {user?.posts?.length}
+              </span>
+            </Tab>
           </TabList>
 
           <TabPanel>
             <ProfileTab user={user} />
           </TabPanel>
           <TabPanel>
-            <div className="flex flex-col gap-2 items-center justify-center mt-10">
-              <UserIcon className="w-10 h-10" />
-              <h3 className="text-xl font-medium">
-                Nenhuma publicação encontrada
-              </h3>
-              <span>Você ainda não fez nenhuma publicação.</span>
-
-              <Button
-                className="h-8 mt-2"
-                variant="outline"
-                onClick={() => {
-                  router.push("/publicar");
-                }}
-              >
-                <Plus className="w-4 h-4 mr-1" />
-                Publicar Conteúdo
-              </Button>
-            </div>
+            <PublishesTab user={user} />
           </TabPanel>
         </Tabs>
       </div>
 
-      <Footer className="w-[60vw]" />
+      <Footer className="w-[50vw]" />
     </div>
   );
 }
