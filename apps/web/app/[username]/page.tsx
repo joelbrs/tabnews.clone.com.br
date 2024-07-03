@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -18,7 +17,7 @@ import { User } from "../../hooks";
 import { environment } from "../../relay";
 import { ProfileTab } from "./_profile-tab";
 import { PublishesTab } from "./_publishes-tab";
-import { Settings, MoreHorizontal, User as UserIcon, Plus } from "lucide-react";
+import { Settings, MoreHorizontal, User as UserIcon } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 function RenderEditProfile(
@@ -69,7 +68,9 @@ export default function PerfilPage(): JSX.Element {
       }).toPromise();
 
       const { edges } = (data as getUserPostsQuery$data).GetUser;
-      setUser(Array.isArray(edges) ? edges[0].node : undefined);
+      const user = Array.isArray(edges) && edges[0].node;
+
+      setUser(user);
     }
 
     if (params.get("conteudo")) {
