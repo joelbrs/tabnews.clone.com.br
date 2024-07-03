@@ -8,7 +8,7 @@ export default function PublishCard({ posts }: Props): JSX.Element {
   return (
     <>
       {posts?.map((item, i) => (
-        <div className="flex items-start gap-2">
+        <div className="flex items-start gap-3">
           <span>{i + 1}.</span>
           <div>
             <Link

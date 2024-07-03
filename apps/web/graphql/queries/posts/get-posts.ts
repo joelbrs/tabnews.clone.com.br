@@ -9,6 +9,7 @@ export const GetPostsQuery = graphql`
           slug
           tabcoins
           createdAt
+          description
           user {
             username
           }
