@@ -19,13 +19,11 @@ export function UnloggedHeader(): JSX.Element {
       <div className="flex justify-between items-center">
         <nav className="flex items-center gap-5">
           <div className="space-x-2 hover:cursor-pointer hover:text-zinc-400">
-            <div className="flex items-center gap-5">
+            <Link className="flex items-center gap-5" href="/">
               <Image alt="tabnews-log" src={Logo} width={32} height={32} />
               <h3 className="hidden sm:flex">TabNews</h3>
-              <Link className={pathnameIsSelected("/")} href="/">
-                Relevantes
-              </Link>
-            </div>
+              <span className={pathnameIsSelected("/")}>Relevantes</span>
+            </Link>
           </div>
           <Link className={pathnameIsSelected("/recentes")} href="/recentes">
             Recentes
