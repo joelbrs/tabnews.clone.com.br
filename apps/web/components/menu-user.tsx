@@ -9,8 +9,13 @@ import {
 import { List, LogOut, Menu, Plus, Settings, User } from "lucide-react";
 import { ToggleTheme } from ".";
 import { useRouter } from "next/navigation";
+import { User as IUser } from "../hooks";
 
-export function MenuLoggedUser(): JSX.Element {
+interface Props {
+  user: IUser;
+}
+
+export function MenuLoggedUser({ user }: Props): JSX.Element {
   const router = useRouter();
 
   const logOut = () => {
@@ -26,10 +31,13 @@ export function MenuLoggedUser(): JSX.Element {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-48 rounded-xl md:relative md:right-3">
-        <DropdownMenuItem className="hover:cursor-pointer">
+        <DropdownMenuItem
+          onClick={() => router.push(`/${user.username}`)}
+          className="hover:cursor-pointer"
+        >
           <div className="flex items-center justify-start gap-1 px-2">
             <User className="mr-2 h-4 w-4 text-gray-500" />
-            <span className="text-sm">joelf</span>
+            <span className="text-sm">{user.username}</span>
           </div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

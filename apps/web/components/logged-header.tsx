@@ -7,12 +7,13 @@ import { usePathname, useRouter } from "next/navigation";
 import Logo from "../public/tabnews-logo.svg";
 import Image from "next/image";
 import Link from "next/link";
+import { User } from "../hooks";
 
 interface Props {
-  tabcoins?: number;
+  user: User;
 }
 
-export function LoggedHeader({ tabcoins }: Props): JSX.Element {
+export function LoggedHeader({ user }: Props): JSX.Element {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -62,7 +63,7 @@ export function LoggedHeader({ tabcoins }: Props): JSX.Element {
               className="bg-blue-700 w-2 h-2 rounded-[2px]"
               title="TabCoins"
             />
-            {tabcoins}
+            {user.tabcoins}
           </div>
           <div
             className="flex items-center gap-1 text-xs font-medium"
@@ -75,7 +76,7 @@ export function LoggedHeader({ tabcoins }: Props): JSX.Element {
             0
           </div>
 
-          <MenuLoggedUser />
+          <MenuLoggedUser user={user} />
         </div>
       </div>
     </header>

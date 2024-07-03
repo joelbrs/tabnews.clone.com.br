@@ -22,9 +22,7 @@ export default function HeaderProvider(): JSX.Element {
 
   return (
     <>
-      {(isLogged && <LoggedHeader tabcoins={user?.tabcoins} />) || (
-        <UnloggedHeader />
-      )}
+      {(isLogged && <LoggedHeader user={user as User} />) || <UnloggedHeader />}
     </>
   );
 }
