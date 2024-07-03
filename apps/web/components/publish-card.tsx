@@ -18,7 +18,7 @@ export default function PublishCard({posts}: Props): JSX.Element {
                 </Link>
                 <div className="text-xs text-muted-foreground pl-3">
                     <span>{item.tabcoins} tabcoins · </span>
-                    <span>{item.user.username} · </span>
+                    <Link className="hover:underline" href={item.user.username}>{item.user.username} · </Link>
                     <span>{item.createdAt}</span>
                 </div>
             </div>
