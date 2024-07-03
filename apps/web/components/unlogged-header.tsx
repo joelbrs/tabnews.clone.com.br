@@ -5,6 +5,7 @@ import { InputSearch } from "./input-search";
 import { ToggleTheme } from "./theme-toggle";
 import Logo from "../public/tabnews-logo.svg";
 import Image from "next/image";
+import Link from "next/link";
 
 export function UnloggedHeader(): JSX.Element {
   const pathname = usePathname();
@@ -21,14 +22,14 @@ export function UnloggedHeader(): JSX.Element {
             <div className="flex items-center gap-5">
               <Image alt="tabnews-log" src={Logo} width={32} height={32} />
               <h3 className="hidden sm:flex">TabNews</h3>
-              <a className={pathnameIsSelected("/")} href="/">
+              <Link className={pathnameIsSelected("/")} href="/">
                 Relevantes
-              </a>
+              </Link>
             </div>
           </div>
-          <a className={pathnameIsSelected("/recentes")} href="/recentes">
+          <Link className={pathnameIsSelected("/recentes")} href="/recentes">
             Recentes
-          </a>
+          </Link>
         </nav>
 
         <div className="flex items-center gap-5">
