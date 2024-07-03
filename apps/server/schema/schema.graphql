@@ -23,6 +23,7 @@ type Query {
   ): [Node]!
 
   GetUser(username: String): UserConnection!
+  GetPosts(page: Int, limit: Int): PostConnection!
 }
 
 """
@@ -41,6 +42,14 @@ type UserEdge {
 
 type UserConnection {
   edges: [UserEdge]
+}
+
+type PostEdge {
+  node: Post!
+}
+
+type PostConnection {
+  edges: [PostEdge]
 }
 
 """
@@ -75,6 +84,7 @@ type Post implements Node {
   creatorId: String!
   tabcoins: Boolean!
   slug: Int!
+  user: User!
 }
 
 """

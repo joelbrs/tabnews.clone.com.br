@@ -32,6 +32,7 @@ const seedPosts = async () => {
       posts.push({
         title: faker.lorem.words(5),
         description: faker.lorem.paragraphs(5),
+        slug: faker.lorem.slug(),
         creatorId: users[Math.floor(Math.random() * users.length)]?._id,
       });
     }
@@ -41,7 +42,6 @@ const seedPosts = async () => {
     throw err;
   }
 };
-
 export const seedDatabase = async () => {
   await seedUsers();
   await seedPosts();

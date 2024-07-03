@@ -14,6 +14,9 @@ export const GetUserPostsQuery = graphql`
             slug
             createdAt
             tabcoins
+            user {
+              username
+            }
           }
         }
       }

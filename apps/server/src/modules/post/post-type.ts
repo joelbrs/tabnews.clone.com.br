@@ -5,6 +5,7 @@ import {
   GraphQLString,
 } from "graphql";
 import { IPost } from "./post-model";
+import { User, UserTypeGQL } from "..";
 
 export const PostTypeGQL = new GraphQLObjectType<IPost>({
   name: "Post",
@@ -41,6 +42,14 @@ export const PostTypeGQL = new GraphQLObjectType<IPost>({
     slug: {
       type: new GraphQLNonNull(GraphQLString),
       description: "Represents post's slug",
+    },
+    user: {
+      type: new GraphQLNonNull(UserTypeGQL),
+      description: "Represents post's creator",
+      resolve: async ({ creatorId: _id }) => {
+        const user = await User.findOne({ _id });
+        return user;
+      },
     },
   }),
 });
