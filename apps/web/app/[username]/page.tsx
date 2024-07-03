@@ -45,7 +45,7 @@ export default function PerfilPage(): JSX.Element {
             <Tab>Perfil</Tab>
             <Tab>
               Publicações{" "}
-              {tab === 1 && (
+              {tab === 1 && user?.posts?.length && (
                 <span className="text-xs px-2 bg-slate-200 rounded-full font-bold">
                   {user?.posts?.length}
                 </span>

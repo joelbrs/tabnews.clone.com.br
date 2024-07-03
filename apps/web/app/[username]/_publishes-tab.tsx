@@ -6,6 +6,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { User as IUser } from "../../hooks";
+import PublishCard from "../../components/publish-card";
 
 interface Props {
   user?: IUser;
@@ -38,27 +39,7 @@ export function PublishesTab({ user }: Props): JSX.Element {
   return (
     <>
       {!user?.posts ||
-        (!user.posts.length && RenderPublishesNotFound(router)) || (
-          <>
-            {user.posts.map((item, i) => (
-              <div className="space-x-2">
-                <span>{i + 1}.</span>
-                <Link
-                  className="hover:underline"
-                  href={item.slug}
-                  key={item.id}
-                >
-                  {item.title}
-                </Link>
-                <div className="text-xs text-muted-foreground pl-3">
-                  <span>{item.tabcoins} tabcoins · </span>
-                  <span>{user.username} · </span>
-                  <span>{item.createdAt}</span>
-                </div>
-              </div>
-            ))}
-          </>
-        )}
+        (!user.posts.length && RenderPublishesNotFound(router)) || (<PublishCard user={user}/>)}
     </>
   );
 }
