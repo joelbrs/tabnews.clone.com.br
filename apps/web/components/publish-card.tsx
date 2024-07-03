@@ -23,9 +23,6 @@ export default function PublishCard({ posts }: Props): JSX.Element {
               <Link className="hover:underline" href={item.user.username}>
                 {item.user.username}
               </Link>
-              <span>
-                {""} · {item.createdAt}
-              </span>
             </div>
           </div>
         </div>

@@ -67,9 +67,11 @@ export default function LoginPage(): JSX.Element {
           return;
         }
 
-        const { token } = (response as loginUserMutation$data).LoginUser;
+        const { token, userId } = (response as loginUserMutation$data)
+          .LoginUser;
 
         localStorage.setItem("tabnews.auth.token", token);
+        localStorage.setItem("tabnews.user.id", userId.toString());
         router.push("/");
       },
     });

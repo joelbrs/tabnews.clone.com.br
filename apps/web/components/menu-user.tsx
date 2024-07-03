@@ -20,6 +20,7 @@ export function MenuLoggedUser({ user }: Props): JSX.Element {
 
   const logOut = () => {
     localStorage.removeItem("tabnews.auth.token");
+    localStorage.removeItem("tabnews.user.id");
 
     router.push("/login");
   };
