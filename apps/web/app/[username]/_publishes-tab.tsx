@@ -3,13 +3,11 @@
 import { Button } from "@repo/ui/components";
 import { Plus, User } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { User as IUser } from "../../hooks";
 import PublishCard from "../../components/publish-card";
 
 interface Props {
-  user?: IUser;
+  posts?: any[];
 }
 
 function RenderPublishesNotFound(router: AppRouterInstance): JSX.Element {
@@ -33,13 +31,13 @@ function RenderPublishesNotFound(router: AppRouterInstance): JSX.Element {
   );
 }
 
-export function PublishesTab({ user }: Props): JSX.Element {
+export function PublishesTab({ posts }: Props): JSX.Element {
   const router = useRouter();
 
   return (
     <>
-      {!user?.posts ||
-        (!user.posts.length && RenderPublishesNotFound(router)) || (<PublishCard user={user}/>)}
+      {!posts ||
+        (!posts.length && RenderPublishesNotFound(router)) || (<PublishCard posts={posts}/>)}
     </>
   );
 }

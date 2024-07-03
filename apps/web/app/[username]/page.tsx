@@ -57,7 +57,7 @@ export default function PerfilPage(): JSX.Element {
             <ProfileTab user={user} />
           </TabPanel>
           <TabPanel>
-            <PublishesTab user={user} />
+            <PublishesTab posts={user?.posts} />
           </TabPanel>
         </Tabs>
       </div>
