@@ -1,4 +1,4 @@
-import { GraphQLInt } from "graphql";
+import { GraphQLInt, GraphQLString } from "graphql";
 import {
   ConnectionArguments,
   connectionArgs,
@@ -7,7 +7,7 @@ import {
 } from "graphql-relay";
 import { Post, PostTypeGQL } from "..";
 
-type GetPostsDtoIn = { page?: number; limit?: number };
+type GetPostsDtoIn = { page?: number; limit?: number; slug?: number };
 
 const { connectionType: PostConnection } = connectionDefinitions({
   nodeType: PostTypeGQL,
@@ -26,12 +26,22 @@ export const GetPostsQuery = {
     limit: {
       type: GraphQLInt,
     },
+    slug: {
+      type: GraphQLString,
+    },
   },
   resolve: async (_: any, args: GetPostsDtoIn) => {
     const page = args.page || DEFAULT_PAGE;
     const limit = args.limit || DEFAULT_LIMIT;
 
-    const posts = await Post.find()
+    let posts;
+
+    if (args.slug) {
+      posts = Post.findOne({ slug: args.slug });
+      return connectionFromArray([posts], args as ConnectionArguments);
+    }
+
+    posts = await Post.find()
       .limit(limit)
       .skip(page * limit)
       .sort("created_at");
