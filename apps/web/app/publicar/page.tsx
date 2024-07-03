@@ -68,8 +68,10 @@ export default function PublicarPage(): JSX.Element {
       setUser((await useAuth())?.user);
     }
 
-    getAuth();
-  }, [user]);
+    if (!user) {
+      getAuth();
+    }
+  }, []);
 
   const onSubmit = (variables: SchemaType) => {
     setLoading(true);

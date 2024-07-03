@@ -54,7 +54,6 @@ export const PostSchema = new Schema<IPost, PostModel>(
   },
   {
     collection: "Post",
-    timestamps: true,
   }
 );
 

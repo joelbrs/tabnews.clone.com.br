@@ -23,7 +23,12 @@ type Query {
   ): [Node]!
 
   GetUser(username: String): UserConnection!
-  GetPosts(page: Int, limit: Int, slug: String): PostConnection!
+  GetPosts(
+    page: Int
+    limit: Int
+    slug: String
+    relevants: Boolean
+  ): PostConnection!
 }
 
 """
@@ -34,6 +39,11 @@ interface Node {
   The id of the object.
   """
   id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
 }
 
 type UserEdge {
@@ -49,6 +59,7 @@ type PostEdge {
 }
 
 type PostConnection {
+  pageInfo: PageInfo!
   edges: [PostEdge]
 }
 

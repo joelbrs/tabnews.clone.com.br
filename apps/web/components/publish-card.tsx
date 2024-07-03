@@ -12,7 +12,7 @@ export default function PublishCard({ posts }: Props): JSX.Element {
           <span>{i + 1}.</span>
           <div>
             <Link
-              className="hover:underline font-medium capitalize"
+              className="hover:underline font-medium capitalize text-wrap"
               href={`${item.user.username}/${item.slug}`}
               key={item.id}
             >
@@ -20,12 +20,10 @@ export default function PublishCard({ posts }: Props): JSX.Element {
             </Link>
             <div className="text-xs text-muted-foreground">
               <span>{item.tabcoins} tabcoins · </span>
+              <span>0 comentário · </span>
               <Link className="hover:underline" href={item.user.username}>
                 {item.user.username}
               </Link>
-              <span>
-                {""} · {item.createdAt}
-              </span>
             </div>
           </div>
         </div>
