@@ -1,4 +1,4 @@
-import { GraphQLInt, GraphQLString } from "graphql";
+import { GraphQLBoolean, GraphQLInt, GraphQLString } from "graphql";
 import {
   ConnectionArguments,
   connectionArgs,
@@ -7,7 +7,12 @@ import {
 } from "graphql-relay";
 import { Post, PostTypeGQL } from "..";
 
-type GetPostsDtoIn = { page?: number; limit?: number; slug?: number };
+type GetPostsDtoIn = {
+  page?: number;
+  limit?: number;
+  slug?: number;
+  relevants?: boolean;
+};
 
 const { connectionType: PostConnection } = connectionDefinitions({
   nodeType: PostTypeGQL,
@@ -29,22 +34,38 @@ export const GetPostsQuery = {
     slug: {
       type: GraphQLString,
     },
+    relevants: {
+      type: GraphQLBoolean,
+    },
   },
   resolve: async (_: any, args: GetPostsDtoIn) => {
-    const page = args.page || DEFAULT_PAGE;
-    const limit = args.limit || DEFAULT_LIMIT;
-
+    const {
+      page = DEFAULT_PAGE,
+      limit = DEFAULT_LIMIT,
+      slug,
+      relevants,
+    } = args;
     let posts;
 
-    if (args.slug) {
-      posts = Post.findOne({ slug: args.slug });
+    if (slug) {
+      posts = await Post.findOne({ slug });
       return connectionFromArray([posts], args as ConnectionArguments);
     }
 
+    const totalCount = await Post.countDocuments();
+
+    const skip = page * limit;
+
     posts = await Post.find()
       .limit(limit)
-      .skip(page * limit)
-      .sort("created_at");
-    return connectionFromArray(posts, args as ConnectionArguments);
+      .skip(skip)
+      .sort(relevants ? { tabcoins: -1, createdAt: -1 } : { createdAt: -1 });
+
+    const connection = connectionFromArray(posts, args as ConnectionArguments);
+
+    connection.pageInfo.hasNextPage = skip + limit < totalCount;
+    connection.pageInfo.hasPreviousPage = skip > 0;
+
+    return connection;
   },
 };
