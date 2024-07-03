@@ -21,6 +21,7 @@ import { Loader2 } from "lucide-react";
 import { z } from "../../utils";
 import { useState } from "react";
 import { loginUserMutation$data } from "../../graphql/mutations/user/__generated__/loginUserMutation.graphql";
+import Link from "next/link";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -129,11 +130,15 @@ export default function LoginPage(): JSX.Element {
       <section className="text-center text-sm">
         <p>
           Novo no TabNews?{" "}
-          <span className="text-blue-500">Crie sua conta aqui.</span>
+          <Link href="/cadastro" className="text-blue-500 hover:underline">
+            Crie sua conta aqui.
+          </Link>
         </p>
         <p>
           Esqueceu sua senha?{" "}
-          <span className="text-blue-500">Clique aqui.</span>
+          <Link href="/cadastro" className="text-blue-500 hover:underline">
+            Clique aqui.
+          </Link>
         </p>
       </section>
       <Footer className="w-[32vw]" />
