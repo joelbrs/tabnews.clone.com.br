@@ -41,6 +41,11 @@ interface Node {
   id: ID!
 }
 
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
 type UserEdge {
   node: User!
 }
@@ -54,6 +59,7 @@ type PostEdge {
 }
 
 type PostConnection {
+  pageInfo: PageInfo!
   edges: [PostEdge]
 }
 

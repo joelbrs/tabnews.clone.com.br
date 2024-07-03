@@ -7,5 +7,6 @@ export * from "./menu-user";
 export * from "./logged-header";
 export * from "./markdown-editor";
 export * from "./publish-card";
+export * from "./pagination";
 
 export * from "./providers";
