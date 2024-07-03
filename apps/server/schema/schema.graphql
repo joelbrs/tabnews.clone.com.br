@@ -84,6 +84,7 @@ type Post implements Node {
   creatorId: String!
   tabcoins: Boolean!
   slug: Int!
+  user: User!
 }
 
 """
