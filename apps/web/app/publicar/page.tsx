@@ -14,7 +14,7 @@ import {
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import MarkdownEditor from "../../components/markdown-editor";
+import { MarkdownEditor } from "../../components";
 import { Footer } from "../../components";
 import { useRouter } from "next/navigation";
 import { useMutation } from "react-relay";
@@ -22,6 +22,7 @@ import { CreatePostMutation } from "../../graphql";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { User, useAuth } from "../../hooks";
+import { fetchMutation } from "../../relay";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -75,35 +76,15 @@ export default function PublicarPage(): JSX.Element {
 
   const onSubmit = (variables: SchemaType) => {
     setLoading(true);
-    request({
+    fetchMutation({
       variables,
-      onError: () => {
-        toast({
-          title: "Oops! Algo deu errado.",
-          variant: "destructive",
-        });
-        setLoading(false);
-      },
-      onCompleted: (_, errors) => {
-        setLoading(false);
-        if (errors?.length) {
-          toast({
-            title: "Atenção",
-            description: errors[0]?.message,
-            variant: "warning",
-          });
-          return;
-        }
-
-        toast({
-          title: "Sucesso!",
-          description: "Salvo com sucesso.",
-          variant: "success",
-        });
-
+      request,
+      toast,
+      onCompleted: () => {
         router.push("/");
       },
     });
+    setLoading(false);
   };
 
   return (
@@ -139,7 +120,8 @@ export default function PublicarPage(): JSX.Element {
                   <Label>Corpo da publicação *</Label>
                   <FormControl>
                     <MarkdownEditor
-                      props={field}
+                      {...field}
+                      value={`${field.value}`}
                       onChange={($event: string) => {
                         form.setValue("description", $event);
                       }}

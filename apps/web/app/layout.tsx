@@ -1,7 +1,9 @@
 import "@repo/ui/styles.css";
-import "@toast-ui/editor/toastui-editor.css";
-import "@toast-ui/editor/toastui-editor-viewer.css";
 import "react-tabs/style/react-tabs.css";
+
+import "bytemd/dist/index.css";
+import "../styles/markdown-editor.css";
+
 import { RelayContainer } from "../relay";
 import LayoutContainer from "./_layout-container";
 import { Metadata } from "next";

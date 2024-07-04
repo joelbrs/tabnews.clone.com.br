@@ -1,50 +1,50 @@
-"use client";
+import frontmatter from "@bytemd/plugin-frontmatter";
+import gemoji from "@bytemd/plugin-gemoji";
+import gfm from "@bytemd/plugin-gfm";
+import gfmLocale from "@bytemd/plugin-gfm/locales/pt_BR.json";
+import highlight from "@bytemd/plugin-highlight";
+import math from "@bytemd/plugin-math";
+import mathLocale from "@bytemd/plugin-math/locales/pt_BR.json";
+import breaks from "@bytemd/plugin-breaks";
 
-import { Editor } from "@toast-ui/react-editor";
-import { useTheme } from "next-themes";
-import React, { useEffect, useRef, useState } from "react";
+import locale from "bytemd/locales/pt.json";
+
+import { Editor, Viewer } from "@bytemd/react";
 
 interface Props {
-  props: any;
-  onChange: Function;
+  value: string;
+  onChange?: Function;
 }
 
-export default function MarkdownEditor({
-  props,
-  onChange,
-}: Props): JSX.Element {
-  const ref = useRef<any>();
+const plugins = [
+  frontmatter(),
+  gemoji(),
+  gfm({
+    locale: gfmLocale,
+  }),
+  math({
+    locale: mathLocale,
+  }),
+  highlight(),
+  breaks(),
+];
 
-  const { theme } = useTheme();
+export function ViewerMarkdown({ value }: Props): JSX.Element {
+  return <Viewer value={value} plugins={plugins} />;
+}
 
-  const [key, setKey] = useState(0);
-  const [markdown, setMarkdown] = useState();
-
-  useEffect(() => {
-    if (!markdown && props.value) {
-      setMarkdown(props.value);
-      setKey(key + 1);
-    }
-  }, [props, markdown]);
+export function MarkdownEditor({ value, onChange }: Props): JSX.Element {
   return (
     <Editor
-      {...props}
-      key={key}
-      ref={ref}
-      language="pt-BR"
-      initialValue={markdown}
-      previewStyle="vertical"
-      previewHighlight={false}
-      usageStatistics={false}
-      hideModeSwitch={true}
-      theme={theme}
-      onChange={() => {
-        const { current } = ref as any;
-        if (!current) return;
-
-        onChange(current.getInstance().getMarkdown());
+      value={value}
+      mode="split"
+      locale={locale}
+      onChange={($event: string) => {
+        if (onChange) {
+          onChange($event);
+        }
       }}
-      value={markdown}
+      plugins={plugins}
     />
   );
 }

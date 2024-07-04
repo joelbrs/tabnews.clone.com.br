@@ -15,14 +15,14 @@ import {
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
 import { z } from "../../utils";
-import { Footer } from "../../components";
+import { Footer, MarkdownEditor } from "../../components";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks";
 import { useMutation } from "react-relay";
 import { UpdateUserMutation } from "../../graphql";
 import { Loader2 } from "lucide-react";
-import MarkdownEditor from "../../components/markdown-editor";
+import { fetchMutation } from "../../relay";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -71,33 +71,9 @@ export default function PerfilPage(): JSX.Element {
   const [request] = useMutation(UpdateUserMutation);
 
   const onSubmit = (variables: SchemaType) => {
-    request({
-      variables,
-      onError: () => {
-        toast({
-          title: "Oops! Algo deu errado.",
-          variant: "destructive",
-        });
-      },
-      onCompleted: (_, errors) => {
-        setLoading(false);
-
-        if (errors?.length) {
-          toast({
-            title: "Atenção",
-            description: errors[0]?.message,
-            variant: "warning",
-          });
-          return;
-        }
-
-        toast({
-          title: "Sucesso!",
-          description: "Salvo com sucesso.",
-          variant: "success",
-        });
-      },
-    });
+    setLoading(true);
+    fetchMutation({ request, toast, variables });
+    setLoading(false);
   };
 
   return (
@@ -140,10 +116,11 @@ export default function PerfilPage(): JSX.Element {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <Label>E-mail *</Label>
+                  <Label>Descrição</Label>
                   <FormControl>
                     <MarkdownEditor
-                      props={field}
+                      {...field}
+                      value={`${field.value}`}
                       onChange={($event: string) => {
                         form.setValue("description", $event);
                       }}
@@ -160,7 +137,7 @@ export default function PerfilPage(): JSX.Element {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <div className="flex items-center gap-2 mt-5 mb-2">
+                    <div className="flex items-center gap-2 lg:mt-5 mt-20 mb-2">
                       <Checkbox
                         {...field}
                         checked={field.value}

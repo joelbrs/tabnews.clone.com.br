@@ -1,9 +1,4 @@
-import {
-  GraphQLBoolean,
-  GraphQLNonNull,
-  GraphQLScalarType,
-  GraphQLString,
-} from "graphql";
+import { GraphQLBoolean, GraphQLString } from "graphql";
 import { mutationWithClientMutationId } from "graphql-relay";
 import { UserTypeGQL } from "../user-type";
 import { Context } from "koa";
@@ -12,29 +7,38 @@ import { validateJwt } from "@/validation";
 
 export type UpdateUserDtoIn = Pick<
   IUser,
-  "username" | "description" | "notify"
+  "username" | "description" | "notify" | "email"
 >;
 
 export const UpdateUserMutation = mutationWithClientMutationId({
   name: "UpdateUser",
   inputFields: {
     username: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: GraphQLString,
     },
     email: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: GraphQLString,
     },
     description: {
       type: GraphQLString,
     },
     notify: {
-      type: new GraphQLNonNull(GraphQLBoolean),
+      type: GraphQLBoolean,
     },
   },
   mutateAndGetPayload: async (data: UpdateUserDtoIn, ctx: Context) => {
     const { username } = validateJwt(ctx.token as string);
 
-    const user = await User.findOneAndUpdate({ username }, data, { new: true });
+    const user = await User.findOneAndUpdate(
+      { username },
+      {
+        email: data?.email ?? undefined,
+        username: data?.username ?? undefined,
+        description: data?.description ?? undefined,
+        notify: data?.notify ?? undefined,
+      },
+      { new: true }
+    );
     return {
       user,
     };
