@@ -160,7 +160,7 @@ export default function PerfilPage(): JSX.Element {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <div className="flex items-center gap-2 mt-5 mb-2">
+                    <div className="flex items-center gap-2 lg:mt-5 mt-20 mb-2">
                       <Checkbox
                         {...field}
                         checked={field.value}
