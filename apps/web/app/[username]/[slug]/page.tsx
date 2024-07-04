@@ -5,18 +5,14 @@ import { fetchQuery } from "relay-runtime";
 import { environment } from "../../../relay";
 import { GetPostsQuery } from "../../../graphql";
 import { getPostsQuery$data } from "../../../graphql/queries/posts/__generated__/getPostsQuery.graphql";
-import MarkdownPreview from "@uiw/react-markdown-preview";
 import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
-import { Footer } from "../../../components";
+import { Footer, ViewerMarkdown } from "../../../components";
 import VotePost from "../../../components/vote-post";
 import Link from "next/link";
 
 export default function PostPage(): JSX.Element {
   const [post, setPost] = useState<any>();
-  const [key, setKey] = useState(0)
-
-  const { theme } = useTheme();
+  const [key, setKey] = useState(0);
 
   const pathname = usePathname();
 
@@ -30,7 +26,7 @@ export default function PostPage(): JSX.Element {
       const { edges } = (data as getPostsQuery$data).GetPosts;
 
       setPost(Array.isArray(edges) ? edges[0].node : undefined);
-      setKey(key + 1)
+      setKey(key + 1);
     }
 
     getPost();
@@ -55,14 +51,7 @@ export default function PostPage(): JSX.Element {
             </h1>
 
             <div className="justify-center pr-5 pl-2 sm:w-[55vw]">
-              <MarkdownPreview
-                source={post?.description}
-                style={
-                  theme === "light"
-                    ? { background: "#FFF", color: "#000" }
-                    : { backgroundColor: "#020817" }
-                }
-              />
+              <ViewerMarkdown value={post?.description} />
             </div>
           </div>
         </div>

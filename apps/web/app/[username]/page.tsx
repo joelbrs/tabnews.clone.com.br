@@ -88,7 +88,7 @@ export default function PerfilPage(): JSX.Element {
 
   return (
     <main className="flex flex-col items-center gap-10 pt-8 pb-3.5">
-      <div className="sm:w-[50vw] w-full px-2 space-y-3">
+      <div className="sm:w-[60vw] w-full px-2 space-y-3">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold mb-2">{user?.username}</h1>
 
@@ -142,7 +142,7 @@ export default function PerfilPage(): JSX.Element {
         </Tabs>
       </div>
 
-      <Footer className="w-[50vw]" />
+      <Footer className="w-[60vw]" />
     </main>
   );
 }

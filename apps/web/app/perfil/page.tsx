@@ -15,14 +15,13 @@ import {
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
 import { z } from "../../utils";
-import { Footer } from "../../components";
+import { Footer, MarkdownEditor } from "../../components";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks";
 import { useMutation } from "react-relay";
 import { UpdateUserMutation } from "../../graphql";
 import { Loader2 } from "lucide-react";
-import MarkdownEditor from "../../components/markdown-editor";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -143,7 +142,8 @@ export default function PerfilPage(): JSX.Element {
                   <Label>E-mail *</Label>
                   <FormControl>
                     <MarkdownEditor
-                      props={field}
+                      {...field}
+                      value={`${field.value}`}
                       onChange={($event: string) => {
                         form.setValue("description", $event);
                       }}
