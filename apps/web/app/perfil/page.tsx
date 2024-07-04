@@ -70,6 +70,7 @@ export default function PerfilPage(): JSX.Element {
   const [request] = useMutation(UpdateUserMutation);
 
   const onSubmit = (variables: SchemaType) => {
+    setLoading(true);
     request({
       variables,
       onError: () => {
