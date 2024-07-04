@@ -2,7 +2,7 @@ import { graphql } from "relay-runtime";
 
 export const GetPostsQuery = graphql`
   query getPostsQuery(
-    $page: Int
+    $page: Int = 0
     $limit: Int = 30
     $slug: String
     $relevants: Boolean = false

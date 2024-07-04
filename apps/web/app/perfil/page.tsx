@@ -79,8 +79,6 @@ export default function PerfilPage(): JSX.Element {
         });
       },
       onCompleted: (_, errors) => {
-        setLoading(false);
-
         if (errors?.length) {
           toast({
             title: "Atenção",
@@ -97,6 +95,7 @@ export default function PerfilPage(): JSX.Element {
         });
       },
     });
+    setLoading(false);
   };
 
   return (
@@ -139,7 +138,7 @@ export default function PerfilPage(): JSX.Element {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <Label>E-mail *</Label>
+                  <Label>Descrição</Label>
                   <FormControl>
                     <MarkdownEditor
                       {...field}

@@ -56,7 +56,7 @@ export default function PostPage(): JSX.Element {
           </div>
         </div>
       </section>
-      <Footer className="w-[50vw]" />
+      <Footer className="w-[55vw]" />
     </main>
   );
 }

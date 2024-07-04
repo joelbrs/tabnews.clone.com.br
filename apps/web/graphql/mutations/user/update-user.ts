@@ -2,10 +2,10 @@ import { graphql } from "relay-runtime";
 
 export const UpdateUserMutation = graphql`
   mutation updateUserMutation(
-    $username: String!
-    $description: String!
-    $notify: Boolean!
-    $email: String!
+    $username: String
+    $description: String
+    $notify: Boolean
+    $email: String
   ) {
     UpdateUser(
       input: {
