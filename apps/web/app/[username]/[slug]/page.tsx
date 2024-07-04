@@ -6,12 +6,16 @@ import { environment } from "../../../relay";
 import { GetPostsQuery } from "../../../graphql";
 import { getPostsQuery$data } from "../../../graphql/queries/posts/__generated__/getPostsQuery.graphql";
 import { usePathname } from "next/navigation";
-import { Footer, ViewerMarkdown } from "../../../components";
+import { Footer, MenuActions, ViewerMarkdown } from "../../../components";
 import VotePost from "../../../components/vote-post";
 import Link from "next/link";
+import { DropdownMenuItem } from "@repo/ui/components";
+import { Pencil, Trash2 } from "lucide-react";
 
 export default function PostPage(): JSX.Element {
   const [post, setPost] = useState<any>();
+  const [isLoggedUser, setIsLoggedUser] = useState(false);
+
   const [key, setKey] = useState(0);
 
   const pathname = usePathname();
@@ -25,7 +29,17 @@ export default function PostPage(): JSX.Element {
       }).toPromise();
       const { edges } = (data as getPostsQuery$data).GetPosts;
 
-      setPost(Array.isArray(edges) ? edges[0].node : undefined);
+      const post = Array.isArray(edges) ? edges[0].node : undefined;
+
+      if (post) {
+        const loggedUserId = localStorage.getItem("tabnews.user.id");
+
+        if (post?.user.id === loggedUserId) {
+          setIsLoggedUser(true);
+        }
+      }
+
+      setPost(post);
       setKey(key + 1);
     }
 
@@ -37,13 +51,28 @@ export default function PostPage(): JSX.Element {
       <section className="flex items-start justify-center my-6">
         <VotePost post={post} key={key} />
         <div className="flex flex-col items-center justify-center sm:w-[55vw]">
-          <div className="flex items-center justify-start gap-2 self-start px-2 text-xs mb-1">
+          <div className="flex items-center justify-between gap-2 self-start px-2 text-xs mb-1 w-full">
             <Link
               href={`/${post?.user.username}`}
               className="self-start px-3 py-0.5 rounded-md text-blue-500 font-mono dark:bg-[#121D2F] bg-cyan-100 hover:underline hover:cursor-pointer"
             >
               {post?.user.username}
             </Link>
+
+            {isLoggedUser && (
+              <MenuActions>
+                <div>
+                  <DropdownMenuItem className="hover:cursor-pointer">
+                    <Pencil className="h-4 w-4 mr-2" />
+                    Editar
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="hover:cursor-pointer text-destructive dark:text-red-500 hover:text-red-400">
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Excluir
+                  </DropdownMenuItem>
+                </div>
+              </MenuActions>
+            )}
           </div>
           <div className="flex flex-col items-center justify-start gap-3">
             <h1 className="text-3xl font-medium self-start px-2 mb-1 leading-relaxed sm:leading-normal">

@@ -9,10 +9,8 @@ import { ReactNode } from "react";
 
 export function MenuActions({
   children,
-  onClick,
 }: {
   children: ReactNode;
-  onClick: Function;
 }): JSX.Element {
   return (
     <DropdownMenu>
@@ -22,14 +20,7 @@ export function MenuActions({
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="relative sm:left-20 w-48 rounded-xl">
-        <DropdownMenuItem
-          onClick={() => {
-            onClick();
-          }}
-          className="hover:cursor-pointer"
-        >
-          {children}
-        </DropdownMenuItem>
+        {children}
       </DropdownMenuContent>
     </DropdownMenu>
   );

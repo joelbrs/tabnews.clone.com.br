@@ -13,6 +13,7 @@ import { ProfileTab } from "./_profile-tab";
 import { PublishesTab } from "./_publishes-tab";
 import { Settings, User as UserIcon } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { DropdownMenuItem } from "@repo/ui/components";
 
 function RenderEditProfile(
   router: AppRouterInstance,
@@ -21,15 +22,18 @@ function RenderEditProfile(
   return (
     <>
       {isSameUser && (
-        <MenuActions
-          onClick={() => {
-            router.push("/perfil");
-          }}
-        >
-          <div className="flex items-center gap-1.5">
-            <Settings className="w-4 h-4 text-muted-foreground" />
-            Editar Perfil
-          </div>
+        <MenuActions>
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onClick={() => {
+              router.push("/perfil");
+            }}
+          >
+            <div className="flex items-center gap-1.5">
+              <Settings className="w-4 h-4 text-muted-foreground" />
+              Editar Perfil
+            </div>
+          </DropdownMenuItem>
         </MenuActions>
       )}
     </>

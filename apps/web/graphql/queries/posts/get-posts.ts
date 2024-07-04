@@ -19,6 +19,7 @@ export const GetPostsQuery = graphql`
           createdAt
           description
           user {
+            id
             username
           }
         }
