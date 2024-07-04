@@ -21,6 +21,7 @@ import { InputPassword, Footer } from "../../components";
 import { useMutation } from "react-relay";
 import { CreateUserMutation } from "../../graphql";
 import { Loader2 } from "lucide-react";
+import { fetchMutation } from "../../relay";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -48,33 +49,9 @@ export default function CadastroPage(): JSX.Element {
   const [request] = useMutation(CreateUserMutation);
 
   const onSubmit = (variables: SchemaType): void => {
-    request({
-      variables,
-      onError: () => {
-        toast({
-          title: "Oops! Algo deu errado.",
-          variant: "destructive",
-        });
-      },
-      onCompleted: (_, errors) => {
-        setLoading(false);
-
-        if (errors?.length) {
-          toast({
-            title: "Atenção",
-            description: errors[0]?.message,
-            variant: "warning",
-          });
-          return;
-        }
-
-        toast({
-          title: "Sucesso!",
-          description: "Salvo com sucesso.",
-          variant: "success",
-        });
-      },
-    });
+    setLoading(true);
+    fetchMutation({ request, variables, toast });
+    setLoading(false);
   };
 
   return (

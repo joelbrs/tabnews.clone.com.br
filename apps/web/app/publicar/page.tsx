@@ -22,6 +22,7 @@ import { CreatePostMutation } from "../../graphql";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { User, useAuth } from "../../hooks";
+import { fetchMutation } from "../../relay";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -75,35 +76,15 @@ export default function PublicarPage(): JSX.Element {
 
   const onSubmit = (variables: SchemaType) => {
     setLoading(true);
-    request({
+    fetchMutation({
       variables,
-      onError: () => {
-        toast({
-          title: "Oops! Algo deu errado.",
-          variant: "destructive",
-        });
-        setLoading(false);
-      },
-      onCompleted: (_, errors) => {
-        setLoading(false);
-        if (errors?.length) {
-          toast({
-            title: "Atenção",
-            description: errors[0]?.message,
-            variant: "warning",
-          });
-          return;
-        }
-
-        toast({
-          title: "Sucesso!",
-          description: "Salvo com sucesso.",
-          variant: "success",
-        });
-
+      request,
+      toast,
+      onCompleted: () => {
         router.push("/");
       },
     });
+    setLoading(false);
   };
 
   return (

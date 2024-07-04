@@ -18,6 +18,7 @@ import { Loader2 } from "lucide-react";
 import { z } from "../../utils";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { fetchMutation } from "../../relay";
 
 interface Props {
   user?: User;
@@ -50,32 +51,16 @@ function RenderDescription(user?: User): JSX.Element {
   };
 
   const updateUser = () => {
-    setIsLoading(true);
-    request({
-      variables: {
-        description: form.getValues("description"),
-      },
-      onError: () => {
-        toast({
-          title: "Oops! Algo deu errado.",
-          variant: "destructive",
-        });
-      },
-      onCompleted: (_, errors) => {
-        if (errors?.length) {
-          toast({
-            title: "Atenção",
-            description: errors[0]?.message,
-            variant: "warning",
-          });
-          return;
-        }
+    const variables = {
+      description: form.getValues("description"),
+    };
 
-        toast({
-          title: "Sucesso!",
-          description: "Salvo com sucesso.",
-          variant: "success",
-        });
+    setIsLoading(true);
+    fetchMutation<void>({
+      variables,
+      toast,
+      request,
+      onCompleted: () => {
         setShowEditor(false);
       },
     });

@@ -22,6 +22,7 @@ import { useAuth } from "../../hooks";
 import { useMutation } from "react-relay";
 import { UpdateUserMutation } from "../../graphql";
 import { Loader2 } from "lucide-react";
+import { fetchMutation } from "../../relay";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -71,31 +72,7 @@ export default function PerfilPage(): JSX.Element {
 
   const onSubmit = (variables: SchemaType) => {
     setLoading(true);
-    request({
-      variables,
-      onError: () => {
-        toast({
-          title: "Oops! Algo deu errado.",
-          variant: "destructive",
-        });
-      },
-      onCompleted: (_, errors) => {
-        if (errors?.length) {
-          toast({
-            title: "Atenção",
-            description: errors[0]?.message,
-            variant: "warning",
-          });
-          return;
-        }
-
-        toast({
-          title: "Sucesso!",
-          description: "Salvo com sucesso.",
-          variant: "success",
-        });
-      },
-    });
+    fetchMutation({ request, toast, variables });
     setLoading(false);
   };
 

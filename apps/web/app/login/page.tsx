@@ -22,6 +22,7 @@ import { z } from "../../utils";
 import { useState } from "react";
 import { loginUserMutation$data } from "../../graphql/mutations/user/__generated__/loginUserMutation.graphql";
 import Link from "next/link";
+import { fetchMutation } from "../../relay";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -47,35 +48,19 @@ export default function LoginPage(): JSX.Element {
 
   const onSubmit = (variables: SchemaType) => {
     setLoading(true);
-    request({
+    fetchMutation<loginUserMutation$data>({
       variables,
-      onError: () => {
-        toast({
-          title: "Oops! Algo deu errado.",
-          variant: "destructive",
-        });
-        setLoading(false);
-      },
-      onCompleted: (response, errors) => {
-        setLoading(false);
-
-        if (errors?.length) {
-          toast({
-            title: "Atenção",
-            description: errors[0]?.message,
-            variant: "warning",
-          });
-          return;
-        }
-
-        const { token, userId } = (response as loginUserMutation$data)
-          .LoginUser;
+      toast,
+      request,
+      onCompleted: ({ LoginUser }) => {
+        const { token, userId } = LoginUser;
 
         localStorage.setItem("tabnews.auth.token", token);
         localStorage.setItem("tabnews.user.id", userId.toString());
         router.push("/");
       },
     });
+    setLoading(false);
   };
 
   return (
