@@ -41,6 +41,10 @@ export const VotePostMutation = mutationWithClientMutationId({
       throw new EntityNotFoundException("Post");
     }
 
+    if (subId?.toString() === post.creatorId?.toString()) {
+      throw new BusinessException("User cannot vote in your own post.");
+    }
+
     const user = await User.findById(subId);
 
     if (Number(user?.tabcoins) < 2) {
