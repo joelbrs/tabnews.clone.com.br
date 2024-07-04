@@ -17,7 +17,7 @@ export const VotePostMutation = mutationWithClientMutationId({
   inputFields: {
     type: {
       type: new GraphQLEnumType({
-        name: "VoteType",
+        name: "VoteTypeEnum",
         values: {
           UPVOTE: {
             value: "UPVOTE",
@@ -41,13 +41,13 @@ export const VotePostMutation = mutationWithClientMutationId({
       throw new EntityNotFoundException("Post");
     }
 
-    const user = await User.findOne({ id: subId });
+    const user = await User.findById(subId);
 
     if (Number(user?.tabcoins) < 2) {
       throw new BusinessException("User's tabcoins are insufficient.");
     }
 
-    const author = await User.findOne({ id: post.creatorId });
+    const author = await User.findById(post.creatorId);
 
     if (type === "UPVOTE") {
       post.tabcoins++;
