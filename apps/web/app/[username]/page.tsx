@@ -1,23 +1,17 @@
 "use client";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@repo/ui/components";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { fetchQuery } from "relay-runtime";
-import { Footer } from "../../components";
+import { Footer, MenuActions } from "../../components";
 import { GetUserPostsQuery } from "../../graphql";
 import { getUserPostsQuery$data } from "../../graphql/queries/user/__generated__/getUserPostsQuery.graphql";
 import { User } from "../../hooks";
 import { environment } from "../../relay";
 import { ProfileTab } from "./_profile-tab";
 import { PublishesTab } from "./_publishes-tab";
-import { Settings, MoreHorizontal, User as UserIcon } from "lucide-react";
+import { Settings, User as UserIcon } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 function RenderEditProfile(
@@ -27,26 +21,16 @@ function RenderEditProfile(
   return (
     <>
       {isSameUser && (
-        <DropdownMenu>
-          <DropdownMenuTrigger as-child>
-            <div className="border rounded-lg p-1 bg-slate-100 dark:text-black">
-              <MoreHorizontal className="w-4 h-4 hover:cursor-pointer" />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="relative sm:left-20 w-48 rounded-xl">
-            <DropdownMenuItem
-              onClick={() => {
-                router.push("/perfil");
-              }}
-              className="hover:cursor-pointer"
-            >
-              <div className="flex items-center gap-1.5">
-                <Settings className="w-4 h-4 text-muted-foreground" />
-                Editar Perfil
-              </div>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <MenuActions
+          onClick={() => {
+            router.push("/perfil");
+          }}
+        >
+          <div className="flex items-center gap-1.5">
+            <Settings className="w-4 h-4 text-muted-foreground" />
+            Editar Perfil
+          </div>
+        </MenuActions>
       )}
     </>
   );
