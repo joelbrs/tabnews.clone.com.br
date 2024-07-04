@@ -1,6 +1,6 @@
 import { fetchQuery } from "relay-runtime";
 import { environment } from "../relay";
-import { GetUserQuery } from "../graphql";
+import { GetUserQuery, Post } from "../graphql";
 import { getUserQuery$data } from "../graphql/queries/user/__generated__/getUserQuery.graphql";
 export interface User {
   id: string;
@@ -9,7 +9,7 @@ export interface User {
   notify: boolean;
   tabcoins: number;
   username: string;
-  posts: any[];
+  posts: Post[];
 }
 
 type Response = {

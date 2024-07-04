@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { Post } from "../graphql";
 
 interface Props {
-  posts: any[];
+  posts: Post[];
 }
 
 export default function PublishCard({ posts }: Props): JSX.Element {
@@ -14,7 +15,7 @@ export default function PublishCard({ posts }: Props): JSX.Element {
             <Link
               className="hover:underline font-medium capitalize text-wrap"
               href={`${item.user.username}/${item.slug}`}
-              key={item.id}
+              key={item.slug}
             >
               {item.title}
             </Link>

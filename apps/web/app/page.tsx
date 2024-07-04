@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react";
 import { fetchQuery } from "relay-runtime";
 import { environment } from "../relay";
-import { GetPostsQuery } from "../graphql";
+import { GetPostsQuery, Post } from "../graphql";
 import { getPostsQuery$data } from "../graphql/queries/posts/__generated__/getPostsQuery.graphql";
 import PublishCard from "../components/publish-card";
 import { Footer } from "../components";
 import PaginationField, { Pagination } from "../components/pagination";
 
 export default function Page(): JSX.Element {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
     page: 0,
     hasNextPage: false,

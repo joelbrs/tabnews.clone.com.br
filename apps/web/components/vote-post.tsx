@@ -3,13 +3,13 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Button, toast } from "@repo/ui/components";
 import { useMutation } from "react-relay";
-import { VotePostMutation, VoteTypeEnum } from "../graphql";
+import { Post, VotePostMutation, VoteTypeEnum } from "../graphql";
 import { useState } from "react";
 import { votePostMutation$data } from "../graphql/mutations/post/__generated__/votePostMutation.graphql";
 import { fetchMutation } from "../relay";
 
 export interface Props {
-  post: any;
+  post: Post;
 }
 
 export default function VotePost({ post }: Props): JSX.Element {
@@ -27,7 +27,7 @@ export default function VotePost({ post }: Props): JSX.Element {
       variables,
       toast,
       onCompleted: ({ VotePost }) => {
-        setTabcoins(VotePost.post?.tabcoins);
+        setTabcoins(VotePost.post.tabcoins);
       },
     });
   };

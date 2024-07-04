@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { fetchQuery } from "relay-runtime";
 import { environment } from "../../../relay";
-import { GetPostsQuery } from "../../../graphql";
+import { GetPostsQuery, Post } from "../../../graphql";
 import { getPostsQuery$data } from "../../../graphql/queries/posts/__generated__/getPostsQuery.graphql";
 import { usePathname } from "next/navigation";
 import { Footer, MenuActions, ViewerMarkdown } from "../../../components";
@@ -13,7 +13,7 @@ import { DropdownMenuItem } from "@repo/ui/components";
 import { Pencil, Trash2 } from "lucide-react";
 
 export default function PostPage(): JSX.Element {
-  const [post, setPost] = useState<any>();
+  const [post, setPost] = useState<Post>();
   const [isLoggedUser, setIsLoggedUser] = useState(false);
 
   const [key, setKey] = useState(0);
