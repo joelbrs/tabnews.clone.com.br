@@ -34,6 +34,11 @@ export const fetchMutation = <T>({
         });
         return;
       }
+      toast({
+        title: "Sucesso!",
+        description: "Salvo com sucesso.",
+        variant: "success",
+      });
 
       if (onCompleted) {
         onCompleted(response as T);
