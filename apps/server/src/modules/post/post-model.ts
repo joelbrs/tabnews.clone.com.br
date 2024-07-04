@@ -17,8 +17,6 @@ export interface IPost extends Document {
 
 export type PostModel = Model<IPost>;
 
-const DEFAULT_TABCOINS_WHEN_POST_IS_CREATED = 5;
-
 export const PostSchema = new Schema<IPost, PostModel>(
   {
     title: {
@@ -77,15 +75,6 @@ PostSchema.pre<IPost>("save", async function () {
       return (this.slug = slug);
     }
     this.slug = `${slug}-${randomUUID()}`;
-  }
-});
-
-PostSchema.post<IPost>("save", async function () {
-  const user = await User.findOne({ _id: this.creatorId });
-
-  if (user) {
-    user.tabcoins += DEFAULT_TABCOINS_WHEN_POST_IS_CREATED;
-    await user.save();
   }
 });
 
