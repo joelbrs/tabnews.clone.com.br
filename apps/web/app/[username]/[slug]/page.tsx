@@ -14,6 +14,7 @@ import Link from "next/link";
 
 export default function PostPage(): JSX.Element {
   const [post, setPost] = useState<any>();
+  const [key, setKey] = useState(0)
 
   const { theme } = useTheme();
 
@@ -29,6 +30,7 @@ export default function PostPage(): JSX.Element {
       const { edges } = (data as getPostsQuery$data).GetPosts;
 
       setPost(Array.isArray(edges) ? edges[0].node : undefined);
+      setKey(key + 1)
     }
 
     getPost();
@@ -37,7 +39,7 @@ export default function PostPage(): JSX.Element {
   return (
     <main className="space-y-10">
       <section className="flex items-start justify-center my-6">
-        <VotePost post={post} />
+        <VotePost post={post} key={key} />
         <div className="flex flex-col items-center justify-center sm:w-[55vw]">
           <div className="flex items-center justify-start gap-2 self-start px-2 text-xs mb-1">
             <Link
