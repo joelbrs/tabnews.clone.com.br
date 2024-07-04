@@ -106,9 +106,9 @@ type Mutation {
   UpdateUser(input: UpdateUserInput!): UserPayload!
   LoginUser(input: LoginUserInput!): LoginUserPayload!
 
-  CreatePost(input: CreatePostInput): PostPayload!
+  CreatePost(input: CreatePostInput!): PostPayload!
   DeletePost(slug: String!): DeletePostPayload!
-  VotePost(id: String!, type: VoteTypeEnum!): PostPayload!
+  VotePost(input: VotePostInput!): PostPayload!
 }
 
 input CreateUserInput {
@@ -152,7 +152,12 @@ type DeletePostPayload {
   success: Boolean!
 }
 
+input VotePostInput {
+  slug: String!
+  type: VoteTypeEnum!
+}
+
 enum VoteTypeEnum {
-  increment
-  decrement
+  UPVOTE
+  DOWNVOTE
 }

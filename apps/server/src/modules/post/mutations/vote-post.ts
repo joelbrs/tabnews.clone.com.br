@@ -8,8 +8,8 @@ import { BusinessException, EntityNotFoundException } from "@/exceptions";
 import { IUser, User } from "@/modules";
 
 export type VotePostInput = {
-  type: "increment" | "decrement";
-  id: string;
+  type: "UPVOTE" | "DOWNVOTE";
+  slug: string;
 };
 
 export const VotePostMutation = mutationWithClientMutationId({
@@ -19,23 +19,23 @@ export const VotePostMutation = mutationWithClientMutationId({
       type: new GraphQLEnumType({
         name: "VoteType",
         values: {
-          increment: {
-            value: "increment",
+          UPVOTE: {
+            value: "UPVOTE",
           },
-          decrement: {
-            value: "decrement",
+          DOWNVOTE: {
+            value: "DOWNVOTE",
           },
         },
       }),
     },
-    id: {
+    slug: {
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  mutateAndGetPayload: async ({ type, id }: VotePostInput, ctx: Context) => {
+  mutateAndGetPayload: async ({ type, slug }: VotePostInput, ctx: Context) => {
     const { subId } = validateJwt(ctx.token as string);
 
-    const post = await Post.findOne({ id });
+    const post = await Post.findOne({ slug });
 
     if (!post) {
       throw new EntityNotFoundException("Post");
@@ -49,7 +49,7 @@ export const VotePostMutation = mutationWithClientMutationId({
 
     const author = await User.findOne({ id: post.creatorId });
 
-    if (type === "increment") {
+    if (type === "UPVOTE") {
       post.tabcoins++;
       (author as IUser).tabcoins++;
     } else {
