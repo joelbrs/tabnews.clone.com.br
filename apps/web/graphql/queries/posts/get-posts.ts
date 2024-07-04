@@ -1,4 +1,15 @@
 import { graphql } from "relay-runtime";
+import { User } from "../../../hooks";
+
+type PostCreator = Pick<User, "id" | "username">;
+
+export interface Post {
+  title: string;
+  slug: string;
+  tabcoins: number;
+  description: string;
+  user: PostCreator;
+}
 
 export const GetPostsQuery = graphql`
   query getPostsQuery(
