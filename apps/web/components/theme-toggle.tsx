@@ -74,6 +74,10 @@ export function ToggleTheme(
 ): JSX.Element {
   const { setTheme, theme } = useTheme();
 
+  React.useEffect(() => {
+    document.body.setAttribute("data-theme", `${theme}`);
+  }, [theme]);
+
   return (
     <div className="hover:cursor-pointer">
       {type === "icon" ? (
