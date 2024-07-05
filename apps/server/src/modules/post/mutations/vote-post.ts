@@ -2,10 +2,13 @@ import { mutationWithClientMutationId } from "graphql-relay";
 import { Post } from "../post-model";
 import { Context } from "koa";
 import { PostTypeGQL } from "../post-type";
-import { validateJwt } from "@/validation";
+import { validateJwt } from "../../../validation";
 import { GraphQLEnumType, GraphQLNonNull, GraphQLString } from "graphql";
-import { BusinessException, EntityNotFoundException } from "@/exceptions";
-import { IUser, User } from "@/modules";
+import {
+  BusinessException,
+  EntityNotFoundException,
+} from "../../../exceptions";
+import { IUser, User } from "../../../modules";
 
 export type VotePostInput = {
   type: "UPVOTE" | "DOWNVOTE";

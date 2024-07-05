@@ -8,7 +8,7 @@ import { UserTypeGQL } from "../user-type";
 import { GraphQLString } from "graphql";
 import { User } from "../user-model";
 import { Context } from "koa";
-import { validateJwt } from "@/validation";
+import { validateJwt } from "../../../validation";
 
 type FindUserDtoIn = { username?: string };
 

@@ -2,9 +2,12 @@ import { GraphQLBoolean, GraphQLNonNull, GraphQLString } from "graphql";
 import { mutationWithClientMutationId } from "graphql-relay";
 import { Context } from "koa";
 import { Post } from "../post-model";
-import { EntityNotFoundException, UnauthorizedException } from "@/exceptions";
-import { validateJwt } from "@/validation";
-import { User } from "@/modules/user";
+import {
+  EntityNotFoundException,
+  UnauthorizedException,
+} from "../../../exceptions";
+import { validateJwt } from "../../../validation";
+import { User } from "../../../modules/user";
 import { DEFAULT_TABCOINS_WHEN_POST_IS_CREATED } from "./create-post";
 
 export type DeletePostInput = {
