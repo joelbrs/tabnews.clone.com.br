@@ -112,7 +112,7 @@ function RenderDescription(user?: User): JSX.Element {
                 )}
               />
 
-              <div className="flex items-center justify-end gap-2 mt-5">
+              <div className="flex items-center justify-end gap-2 sm:mt-5 pt-10 sm:pt-0 w-full">
                 <Button
                   className="text-muted-foreground h-8 px-8"
                   variant="ghost"

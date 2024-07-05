@@ -10,16 +10,18 @@ interface Props {
   pagination: Pagination;
   onPreviousPage: Function;
   onNextPage: Function;
+  disabled?: boolean;
 }
 
 export default function PaginationField({
   pagination,
   onNextPage,
   onPreviousPage,
+  disabled: disabledProp,
 }: Props): JSX.Element {
   const disabled = {
-    previous: pagination.page === 0,
-    next: !pagination.hasNextPage,
+    previous: disabledProp || pagination.page === 0,
+    next: disabledProp || !pagination.hasNextPage,
   };
 
   return (
