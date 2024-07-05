@@ -113,7 +113,7 @@ export default function PostPage(): JSX.Element {
             </h1>
 
             <div className="justify-center pr-5 pl-2 sm:w-[55vw]">
-              <ViewerMarkdown value={post?.description} />
+              <ViewerMarkdown value={post?.description || ""} />
             </div>
           </div>
         </div>
