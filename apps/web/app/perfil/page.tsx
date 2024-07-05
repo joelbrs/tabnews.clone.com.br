@@ -46,13 +46,14 @@ export default function PerfilPage(): JSX.Element {
     },
   });
 
+  const auth = useAuth();
   const { toast } = useToast();
 
   const router = useRouter();
 
   useEffect(() => {
     async function getAuth() {
-      const { user } = await useAuth();
+      const { user } = await auth.getUser();
 
       if (!user) {
         return router.push("/");

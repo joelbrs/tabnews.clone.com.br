@@ -5,7 +5,7 @@ import { Plus, User } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import PublishCard from "../../components/publish-card";
-import { User as IUser } from "../../hooks";
+import { User as IUser, useAuth } from "../../hooks";
 
 interface Props {
   user?: IUser;
@@ -15,13 +15,13 @@ function RenderPublishesNotFound(
   router: AppRouterInstance,
   { id, username }: IUser
 ): JSX.Element {
-  const idLoggedUser = localStorage.getItem("tabnews.user.id");
+  const auth = useAuth();
 
   return (
     <div className="flex flex-col gap-2 items-center justify-center mt-10">
       <User className="w-10 h-10" />
       <h3 className="text-xl font-medium">Nenhuma publicação encontrada</h3>
-      {(idLoggedUser === id && (
+      {(auth.isLoggedUser(id) && (
         <>
           <span className="text-center">
             Você ainda não fez nenhuma publicação.

@@ -9,7 +9,7 @@ import {
   useToast,
   Form,
 } from "@repo/ui/components";
-import { User } from "../../hooks";
+import { useAuth, User } from "../../hooks";
 import { MarkdownEditor, ViewerMarkdown } from "../../components";
 import { useState } from "react";
 import { useMutation } from "react-relay";
@@ -31,9 +31,11 @@ const schema = z.object({
 function RenderDescription(user?: User): JSX.Element {
   if (!user?.description) return <></>;
 
+  const [description, setDescription] = useState<string>(user?.description);
   const [isLoading, setIsLoading] = useState(false);
   const [showEditor, setShowEditor] = useState(false);
 
+  const auth = useAuth();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof schema>>({
@@ -45,14 +47,9 @@ function RenderDescription(user?: User): JSX.Element {
 
   const [request] = useMutation(UpdateUserMutation);
 
-  const isLoggedUser = () => {
-    const loggedUserId = localStorage.getItem("tabnews.user.id");
-    return loggedUserId === user.id;
-  };
-
   const updateUser = () => {
     const variables = {
-      description: form.getValues("description"),
+      description: form.getValues("description") || "",
     };
 
     setIsLoading(true);
@@ -61,6 +58,7 @@ function RenderDescription(user?: User): JSX.Element {
       toast,
       request,
       onCompleted: () => {
+        setDescription(variables.description);
         setShowEditor(false);
       },
     });
@@ -71,7 +69,7 @@ function RenderDescription(user?: User): JSX.Element {
     <>
       <div className="flex items-center justify-between">
         <Label className="my-1">Descrição</Label>
-        {isLoggedUser() && !showEditor && (
+        {auth.isLoggedUser(user.id) && !showEditor && (
           <Button
             onClick={() => {
               setShowEditor(true);
@@ -86,7 +84,7 @@ function RenderDescription(user?: User): JSX.Element {
 
       {(!showEditor && (
         <div className="border rounded-md px-5 py-2">
-          <ViewerMarkdown value={user?.description} />
+          <ViewerMarkdown value={description} />
         </div>
       )) || (
         <div className="mt-2">
@@ -103,8 +101,9 @@ function RenderDescription(user?: User): JSX.Element {
                     <FormControl>
                       <MarkdownEditor
                         {...field}
-                        value={`${field?.value}`}
+                        value={`${description}`}
                         onChange={($event: string) => {
+                          setDescription($event);
                           form.setValue("description", $event);
                         }}
                       />
@@ -120,6 +119,7 @@ function RenderDescription(user?: User): JSX.Element {
                   type="reset"
                   onClick={() => {
                     setShowEditor(false);
+                    setDescription(user?.description as string);
                   }}
                 >
                   Cancelar

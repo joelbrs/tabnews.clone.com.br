@@ -96,6 +96,7 @@ type Post implements Node {
   tabcoins: Boolean!
   slug: Int!
   user: User!
+  font: String
 }
 
 """
@@ -107,7 +108,8 @@ type Mutation {
   LoginUser(input: LoginUserInput!): LoginUserPayload!
 
   CreatePost(input: CreatePostInput!): PostPayload!
-  DeletePost(slug: String!): DeletePostPayload!
+  DeletePost(input: DeletePostInput!): DeletePostPayload!
+  UpdatePost(input: UpdatePostInput!): PostPayload!
   VotePost(input: VotePostInput!): PostPayload!
 }
 
@@ -146,6 +148,17 @@ input CreatePostInput {
 
 type PostPayload {
   post: Post!
+}
+
+input UpdatePostInput {
+  slug: String!
+  title: String!
+  description: String!
+  font: String
+}
+
+input DeletePostInput {
+  slug: String!
 }
 
 type DeletePostPayload {

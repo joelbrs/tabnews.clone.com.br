@@ -1,6 +1,6 @@
 "use client";
 
-import { z } from "../../utils";
+import { z } from "../../../../utils";
 import {
   Button,
   Form,
@@ -14,15 +14,15 @@ import {
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MarkdownEditor } from "../../components";
-import { Footer } from "../../components";
-import { useRouter } from "next/navigation";
+import { MarkdownEditor, Footer } from "../../../../components";
+import { usePathname, useRouter } from "next/navigation";
 import { useMutation } from "react-relay";
-import { CreatePostMutation } from "../../graphql";
+import { CreatePostMutation, Post } from "../../../../graphql";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-import { User, useAuth } from "../../hooks";
-import { fetchMutation } from "../../relay";
+import { fetchMutation } from "../../../../relay";
+import { getPost } from "../get-post";
+import { useAuth } from "../../../../hooks";
 
 type SchemaType = z.infer<typeof schema>;
 
@@ -32,28 +32,14 @@ const schema = z.object({
   font: z.string().optional(),
 });
 
-function renderWarnFirstPage(isFirst: boolean): JSX.Element {
-  if (!isFirst) return <></>;
-
-  return (
-    <div className="border mb-5 border-yellow-400 dark:border-amber-600 bg-yellow-100 dark:text-white dark:bg-amber-600 px-3 py-3.5 rounded-lg">
-      ⚠ Atenção: Pedimos encarecidamente que{" "}
-      <span className="text-blue-500 hover:cursor-pointer hover:underline">
-        leia isso antes
-      </span>{" "}
-      de fazer sua primeira publicação.
-    </div>
-  );
-}
-
-export default function PublicarPage(): JSX.Element {
-  const [user, setUser] = useState<User>();
+export default function EditarPostPage(): JSX.Element {
   const [isLoading, setLoading] = useState(false);
 
-  const auth = useAuth();
   const { toast } = useToast();
+  const auth = useAuth();
   const router = useRouter();
 
+  const pathname = usePathname();
   const [request] = useMutation(CreatePostMutation);
 
   const form = useForm<SchemaType>({
@@ -66,14 +52,30 @@ export default function PublicarPage(): JSX.Element {
   });
 
   useEffect(() => {
-    async function getAuth() {
-      setUser((await auth.getUser())?.user);
+    async function detail() {
+      const [_, __, slug] = pathname.split("/");
+
+      const post = await getPost(slug);
+
+      if (post) {
+        if (!auth.isLoggedUser(post.user?.id)) {
+          router.push(`${pathname?.replace("/editar", "")}`);
+          toast({
+            title: "Atenção",
+            description: "Unauthorized.",
+            variant: "warning",
+          });
+          return;
+        }
+
+        form.setValue("description", post?.description);
+        form.setValue("title", post?.title);
+        form.setValue("font", post?.font);
+      }
     }
 
-    if (!user) {
-      getAuth();
-    }
-  }, []);
+    detail();
+  }, [pathname]);
 
   const onSubmit = (variables: SchemaType) => {
     setLoading(true);
@@ -91,8 +93,7 @@ export default function PublicarPage(): JSX.Element {
   return (
     <main className="flex flex-col items-center justify-center gap-10 pt-8">
       <section className="sm:w-[62vw] w-full px-2">
-        {renderWarnFirstPage(Boolean(user?.posts?.length))}
-        <h1 className="text-3xl font-bold mb-5">Publicar novo conteúdo</h1>
+        <h1 className="text-3xl font-bold mb-5">Editar conteúdo</h1>
 
         <Form {...form}>
           <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
@@ -171,7 +172,7 @@ export default function PublicarPage(): JSX.Element {
                 disabled={isLoading}
               >
                 {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                Salvar
+                Atualizar
               </Button>
             </div>
           </form>

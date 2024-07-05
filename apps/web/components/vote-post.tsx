@@ -9,7 +9,7 @@ import { votePostMutation$data } from "../graphql/mutations/post/__generated__/v
 import { fetchMutation } from "../relay";
 
 export interface Props {
-  post: Post;
+  post?: Post;
 }
 
 export default function VotePost({ post }: Props): JSX.Element {
@@ -18,7 +18,7 @@ export default function VotePost({ post }: Props): JSX.Element {
 
   const onVote = (type: VoteTypeEnum) => {
     const variables = {
-      slug: post.slug,
+      slug: post?.slug,
       type,
     };
 
