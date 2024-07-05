@@ -50,6 +50,7 @@ export default function PublicarPage(): JSX.Element {
   const [user, setUser] = useState<User>();
   const [isLoading, setLoading] = useState(false);
 
+  const auth = useAuth();
   const { toast } = useToast();
   const router = useRouter();
 
@@ -66,7 +67,7 @@ export default function PublicarPage(): JSX.Element {
 
   useEffect(() => {
     async function getAuth() {
-      setUser((await useAuth())?.user);
+      setUser((await auth.getUser())?.user);
     }
 
     if (!user) {

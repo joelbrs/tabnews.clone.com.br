@@ -9,7 +9,7 @@ import {
   useToast,
   Form,
 } from "@repo/ui/components";
-import { User } from "../../hooks";
+import { useAuth, User } from "../../hooks";
 import { MarkdownEditor, ViewerMarkdown } from "../../components";
 import { useState } from "react";
 import { useMutation } from "react-relay";
@@ -34,6 +34,7 @@ function RenderDescription(user?: User): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
   const [showEditor, setShowEditor] = useState(false);
 
+  const auth = useAuth();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof schema>>({
@@ -44,11 +45,6 @@ function RenderDescription(user?: User): JSX.Element {
   });
 
   const [request] = useMutation(UpdateUserMutation);
-
-  const isLoggedUser = () => {
-    const loggedUserId = localStorage.getItem("tabnews.user.id");
-    return loggedUserId === user.id;
-  };
 
   const updateUser = () => {
     const variables = {
@@ -71,7 +67,7 @@ function RenderDescription(user?: User): JSX.Element {
     <>
       <div className="flex items-center justify-between">
         <Label className="my-1">Descrição</Label>
-        {isLoggedUser() && !showEditor && (
+        {auth.isLoggedUser(user.id) && !showEditor && (
           <Button
             onClick={() => {
               setShowEditor(true);

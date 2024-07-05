@@ -17,7 +17,7 @@ type Response = {
   user?: User;
 };
 
-export const useAuth = async (): Promise<Response> => {
+const getUser = async (): Promise<Response> => {
   try {
     const data = await fetchQuery(environment, GetUserQuery, {}).toPromise();
     const { edges } = (data as getUserQuery$data).GetUser;
@@ -32,4 +32,16 @@ export const useAuth = async (): Promise<Response> => {
       isLogged: false,
     };
   }
+};
+
+export const useAuth = () => {
+  return {
+    getUser,
+    isLoggedUser: (id?: string) => {
+      if (!id) return false;
+
+      const loggedUser = localStorage.getItem("tabnews.user.id");
+      return id === loggedUser;
+    },
+  };
 };

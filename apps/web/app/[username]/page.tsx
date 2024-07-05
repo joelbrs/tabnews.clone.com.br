@@ -7,7 +7,7 @@ import { fetchQuery } from "relay-runtime";
 import { Footer, MenuActions } from "../../components";
 import { GetUserPostsQuery } from "../../graphql";
 import { getUserPostsQuery$data } from "../../graphql/queries/user/__generated__/getUserPostsQuery.graphql";
-import { User } from "../../hooks";
+import { useAuth, User } from "../../hooks";
 import { environment } from "../../relay";
 import { ProfileTab } from "./_profile-tab";
 import { PublishesTab } from "./_publishes-tab";
@@ -45,6 +45,7 @@ export default function PerfilPage(): JSX.Element {
   const [tab, setTab] = useState(0);
   const [key, setKey] = useState(0);
 
+  const auth = useAuth();
   const router = useRouter();
   const params = useSearchParams();
   const pathname = usePathname();
@@ -69,18 +70,13 @@ export default function PerfilPage(): JSX.Element {
     getPosts();
   }, [pathname]);
 
-  const isSameUser = () => {
-    const loggedUserId = localStorage.getItem("tabnews.user.id");
-    return loggedUserId === user?.id;
-  };
-
   return (
     <main className="flex flex-col items-center gap-10 pt-8 pb-3.5">
       <div className="sm:w-[60vw] w-full px-2 space-y-3">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold mb-2">{user?.username}</h1>
 
-          {RenderEditProfile(router, isSameUser())}
+          {RenderEditProfile(router, auth.isLoggedUser(user?.id))}
         </div>
 
         <Tabs
@@ -116,7 +112,7 @@ export default function PerfilPage(): JSX.Element {
               <h3 className="text-xl font-medium">
                 Nenhum comentário encontrado
               </h3>
-              {(isSameUser() && (
+              {(auth.isLoggedUser(user?.id) && (
                 <span className="text-center">
                   Você ainda não fez nenhum comentário.
                 </span>

@@ -10,11 +10,12 @@ export default function HeaderProvider(): JSX.Element {
   const [isLogged, setIsLogged] = useState(false);
   const [user, setUser] = useState<User>();
 
+  const auth = useAuth();
   const pathname = usePathname();
 
   useEffect(() => {
     async function GetAuth() {
-      const { isLogged, user } = await useAuth();
+      const { isLogged, user } = await auth.getUser();
 
       setIsLogged(isLogged);
       setUser(user);

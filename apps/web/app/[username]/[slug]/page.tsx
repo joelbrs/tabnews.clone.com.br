@@ -11,13 +11,14 @@ import VotePost from "../../../components/vote-post";
 import Link from "next/link";
 import { DropdownMenuItem } from "@repo/ui/components";
 import { Pencil, Trash2 } from "lucide-react";
+import { useAuth } from "../../../hooks";
 
 export default function PostPage(): JSX.Element {
   const [post, setPost] = useState<Post>();
   const [isLoggedUser, setIsLoggedUser] = useState(false);
-
   const [key, setKey] = useState(0);
 
+  const auth = useAuth();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -31,12 +32,8 @@ export default function PostPage(): JSX.Element {
 
       const post = Array.isArray(edges) ? edges[0].node : undefined;
 
-      if (post) {
-        const loggedUserId = localStorage.getItem("tabnews.user.id");
-
-        if (post?.user.id === loggedUserId) {
-          setIsLoggedUser(true);
-        }
+      if (auth.isLoggedUser(post?.user.id)) {
+        setIsLoggedUser(true);
       }
 
       setPost(post);
