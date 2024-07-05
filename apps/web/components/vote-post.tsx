@@ -27,7 +27,7 @@ export default function VotePost({ post }: Props): JSX.Element {
       variables,
       toast,
       onCompleted: ({ VotePost }) => {
-        setTabcoins(VotePost.post.tabcoins);
+        setTabcoins(Number(VotePost.post.tabcoins));
       },
     });
   };

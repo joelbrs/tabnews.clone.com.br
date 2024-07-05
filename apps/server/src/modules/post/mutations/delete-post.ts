@@ -48,7 +48,7 @@ export const DeletePostMutation = mutationWithClientMutationId({
     };
   },
   outputFields: {
-    post: {
+    success: {
       type: GraphQLBoolean,
       resolve: async (payload) => (await payload)?.success,
     },

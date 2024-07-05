@@ -43,6 +43,10 @@ export const PostTypeGQL = new GraphQLObjectType<IPost>({
       type: new GraphQLNonNull(GraphQLString),
       description: "Represents post's slug",
     },
+    font: {
+      type: GraphQLString,
+      description: "Represents post's font",
+    },
     user: {
       type: new GraphQLNonNull(UserTypeGQL),
       description: "Represents post's creator",
