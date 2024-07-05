@@ -1,27 +1,34 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchQuery } from "relay-runtime";
-import { environment } from "../../../relay";
-import { GetPostsQuery, Post } from "../../../graphql";
-import { getPostsQuery$data } from "../../../graphql/queries/posts/__generated__/getPostsQuery.graphql";
+import { fetchMutation } from "../../../relay";
+import { DeletePostMutation, Post } from "../../../graphql";
 import { usePathname, useRouter } from "next/navigation";
-import { Footer, MenuActions, ViewerMarkdown } from "../../../components";
+import {
+  DialogConfirm,
+  Footer,
+  MenuActions,
+  ViewerMarkdown,
+} from "../../../components";
 import VotePost from "../../../components/vote-post";
 import Link from "next/link";
-import { DropdownMenuItem } from "@repo/ui/components";
+import { DropdownMenuItem, useToast } from "@repo/ui/components";
 import { Pencil, Trash2 } from "lucide-react";
 import { useAuth } from "../../../hooks";
 import { getPost } from "./get-post";
+import { useMutation } from "react-relay";
 
 export default function PostPage(): JSX.Element {
   const [post, setPost] = useState<Post>();
   const [isLoggedUser, setIsLoggedUser] = useState(false);
   const [key, setKey] = useState(0);
 
+  const { toast } = useToast();
   const auth = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+
+  const [request] = useMutation(DeletePostMutation);
 
   useEffect(() => {
     async function detail() {
@@ -39,6 +46,23 @@ export default function PostPage(): JSX.Element {
 
     detail();
   }, [pathname]);
+
+  const excluirPost = async () => {
+    const [_, __, slug] = pathname.split("/");
+
+    const variables = {
+      slug,
+    };
+
+    fetchMutation({
+      request,
+      toast,
+      variables,
+      onCompleted: () => {
+        router.push("/");
+      },
+    });
+  };
 
   return (
     <main className="space-y-10">
@@ -65,10 +89,20 @@ export default function PostPage(): JSX.Element {
                     <Pencil className="h-4 w-4 mr-2" />
                     Editar
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="hover:cursor-pointer text-destructive dark:text-red-500 hover:text-red-400">
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Excluir
-                  </DropdownMenuItem>
+                  <DialogConfirm
+                    title="Tem certeza que deseja excluir o post?"
+                    description="Esta ação não poderá ser desfeita."
+                    onConfirm={() => excluirPost()}
+                    loading={true}
+                  >
+                    <DropdownMenuItem
+                      onSelect={($event) => $event.preventDefault()}
+                      className="hover:cursor-pointer text-destructive dark:text-red-500 hover:text-red-400"
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Excluir
+                    </DropdownMenuItem>
+                  </DialogConfirm>
                 </div>
               </MenuActions>
             )}

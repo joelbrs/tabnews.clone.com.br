@@ -11,13 +11,15 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@repo/ui/components";
-import { ReactNode } from "react";
+import { Loader2 } from "lucide-react";
+import { ReactNode, useState } from "react";
 
 type Props = {
   title: string;
   description: string;
   children: ReactNode;
   onConfirm: Function;
+  loading?: boolean;
 };
 
 export function DialogConfirm({
@@ -25,7 +27,10 @@ export function DialogConfirm({
   onConfirm,
   children,
   title,
+  loading,
 }: Props): JSX.Element {
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -35,14 +40,20 @@ export function DialogConfirm({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose asChild>
+          <DialogClose disabled={loading && isLoading} asChild>
             <Button>Cancelar</Button>
           </DialogClose>
           <Button
             onClick={() => {
+              setIsLoading(true);
               onConfirm();
+              setIsLoading(false);
             }}
+            disabled={loading && isLoading}
           >
+            {loading && isLoading && (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            )}
             Sim
           </Button>
         </DialogFooter>
