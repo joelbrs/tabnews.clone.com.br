@@ -11,7 +11,7 @@ export type CreatePostInput = Pick<
   "title" | "description" | "creatorId" | "font"
 >;
 
-const DEFAULT_TABCOINS_WHEN_POST_IS_CREATED = 5;
+export const DEFAULT_TABCOINS_WHEN_POST_IS_CREATED = 5;
 
 export const CreatePostMutation = mutationWithClientMutationId({
   name: "CreatePost",
