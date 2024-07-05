@@ -96,6 +96,7 @@ type Post implements Node {
   tabcoins: Boolean!
   slug: Int!
   user: User!
+  font: String
 }
 
 """

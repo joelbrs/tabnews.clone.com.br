@@ -5,13 +5,14 @@ import { fetchQuery } from "relay-runtime";
 import { environment } from "../../../relay";
 import { GetPostsQuery, Post } from "../../../graphql";
 import { getPostsQuery$data } from "../../../graphql/queries/posts/__generated__/getPostsQuery.graphql";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Footer, MenuActions, ViewerMarkdown } from "../../../components";
 import VotePost from "../../../components/vote-post";
 import Link from "next/link";
 import { DropdownMenuItem } from "@repo/ui/components";
 import { Pencil, Trash2 } from "lucide-react";
 import { useAuth } from "../../../hooks";
+import { getPost } from "./get-post";
 
 export default function PostPage(): JSX.Element {
   const [post, setPost] = useState<Post>();
@@ -19,18 +20,14 @@ export default function PostPage(): JSX.Element {
   const [key, setKey] = useState(0);
 
   const auth = useAuth();
+  const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    async function getPost() {
+    async function detail() {
       const [_, __, slug] = pathname.split("/");
 
-      const data = await fetchQuery(environment, GetPostsQuery, {
-        slug,
-      }).toPromise();
-      const { edges } = (data as getPostsQuery$data).GetPosts;
-
-      const post = Array.isArray(edges) ? edges[0].node : undefined;
+      const post = await getPost(slug);
 
       if (auth.isLoggedUser(post?.user.id)) {
         setIsLoggedUser(true);
@@ -40,7 +37,7 @@ export default function PostPage(): JSX.Element {
       setKey(key + 1);
     }
 
-    getPost();
+    detail();
   }, [pathname]);
 
   return (
@@ -59,7 +56,12 @@ export default function PostPage(): JSX.Element {
             {isLoggedUser && (
               <MenuActions>
                 <div>
-                  <DropdownMenuItem className="hover:cursor-pointer">
+                  <DropdownMenuItem
+                    className="hover:cursor-pointer"
+                    onClick={() => {
+                      router.push(`${pathname}/editar`);
+                    }}
+                  >
                     <Pencil className="h-4 w-4 mr-2" />
                     Editar
                   </DropdownMenuItem>

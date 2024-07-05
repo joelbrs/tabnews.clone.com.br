@@ -9,6 +9,7 @@ export interface Post {
   tabcoins: number;
   description: string;
   user: PostCreator;
+  font?: string;
 }
 
 export const GetPostsQuery = graphql`
@@ -29,6 +30,7 @@ export const GetPostsQuery = graphql`
           tabcoins
           createdAt
           description
+          font
           user {
             id
             username
