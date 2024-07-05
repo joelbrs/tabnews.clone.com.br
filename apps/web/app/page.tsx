@@ -6,11 +6,12 @@ import { environment } from "../relay";
 import { GetPostsQuery, Post } from "../graphql";
 import { getPostsQuery$data } from "../graphql/queries/posts/__generated__/getPostsQuery.graphql";
 import PublishCard from "../components/publish-card";
-import { Footer } from "../components";
+import { Footer, PublishCardSkeleton } from "../components";
 import PaginationField, { Pagination } from "../components/pagination";
 
 export default function Page(): JSX.Element {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [pagination, setPagination] = useState<Pagination>({
     page: 0,
     hasNextPage: false,
@@ -18,10 +19,12 @@ export default function Page(): JSX.Element {
 
   useEffect(() => {
     async function getPosts() {
+      setIsLoading(true);
       const data = await fetchQuery(environment, GetPostsQuery, {
         page: pagination.page,
         relevants: true,
       }).toPromise();
+      setIsLoading(false);
 
       const { edges, pageInfo } = (data as getPostsQuery$data).GetPosts;
 
@@ -38,10 +41,12 @@ export default function Page(): JSX.Element {
   return (
     <main className="flex flex-col items-center justify-center py-8 gap-10">
       <div className="flex flex-col sm:items-start sm:justify-start gap-3 pb-5 sm:pb-3.5 sm:w-[60vw] px-2">
-        <PublishCard posts={posts} />
-
+        {(!isLoading && <PublishCard posts={posts} />) || (
+          <PublishCardSkeleton />
+        )}
         <div className="self-center">
           <PaginationField
+            disabled={isLoading}
             onNextPage={(page: number) => {
               setPagination({ page, hasNextPage: pagination.hasNextPage });
             }}

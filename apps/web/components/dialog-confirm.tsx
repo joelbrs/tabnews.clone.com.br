@@ -41,7 +41,9 @@ export function DialogConfirm({
         </DialogHeader>
         <DialogFooter>
           <DialogClose disabled={loading && isLoading} asChild>
-            <Button>Cancelar</Button>
+            <Button className="h-8" variant="outline">
+              Cancelar
+            </Button>
           </DialogClose>
           <Button
             onClick={() => {
@@ -49,6 +51,8 @@ export function DialogConfirm({
               onConfirm();
               setIsLoading(false);
             }}
+            className="h-8"
+            variant="outline"
             disabled={loading && isLoading}
           >
             {loading && isLoading && (

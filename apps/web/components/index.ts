@@ -12,3 +12,4 @@ export * from "./menu-actions";
 export * from "./dialog-confirm";
 
 export * from "./providers";
+export * from "./skeletons";
