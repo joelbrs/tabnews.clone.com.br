@@ -17,7 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MarkdownEditor, Footer } from "../../../../components";
 import { usePathname, useRouter } from "next/navigation";
 import { useMutation } from "react-relay";
-import { CreatePostMutation, Post } from "../../../../graphql";
+import { UpdatePostMutation } from "../../../../graphql";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { fetchMutation } from "../../../../relay";
@@ -40,7 +40,7 @@ export default function EditarPostPage(): JSX.Element {
   const router = useRouter();
 
   const pathname = usePathname();
-  const [request] = useMutation(CreatePostMutation);
+  const [request] = useMutation(UpdatePostMutation);
 
   const form = useForm<SchemaType>({
     resolver: zodResolver(schema),
@@ -78,13 +78,18 @@ export default function EditarPostPage(): JSX.Element {
   }, [pathname]);
 
   const onSubmit = (variables: SchemaType) => {
+    const [_, __, slug] = pathname.split("/");
+
     setLoading(true);
     fetchMutation({
-      variables,
+      variables: {
+        ...variables,
+        slug,
+      },
       request,
       toast,
       onCompleted: () => {
-        router.push("/");
+        router.push(`${pathname?.replace("/editar", "")}`);
       },
     });
     setLoading(false);

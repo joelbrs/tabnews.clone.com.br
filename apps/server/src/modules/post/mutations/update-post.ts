@@ -43,10 +43,14 @@ export const UpdatePostMutation = mutationWithClientMutationId({
       throw new UnauthorizedException();
     }
 
-    const updated = await Post.updateOne({ slug }, data);
+    await Post.updateOne({ slug }, data);
 
     return {
-      post: updated,
+      post: {
+        ...data,
+        slug,
+        id: post.slug,
+      },
     };
   },
   outputFields: {
