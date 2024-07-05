@@ -31,6 +31,7 @@ const schema = z.object({
 function RenderDescription(user?: User): JSX.Element {
   if (!user?.description) return <></>;
 
+  const [description, setDescription] = useState<string>(user?.description);
   const [isLoading, setIsLoading] = useState(false);
   const [showEditor, setShowEditor] = useState(false);
 
@@ -48,7 +49,7 @@ function RenderDescription(user?: User): JSX.Element {
 
   const updateUser = () => {
     const variables = {
-      description: form.getValues("description"),
+      description: form.getValues("description") || "",
     };
 
     setIsLoading(true);
@@ -57,6 +58,7 @@ function RenderDescription(user?: User): JSX.Element {
       toast,
       request,
       onCompleted: () => {
+        setDescription(variables.description);
         setShowEditor(false);
       },
     });
@@ -82,7 +84,7 @@ function RenderDescription(user?: User): JSX.Element {
 
       {(!showEditor && (
         <div className="border rounded-md px-5 py-2">
-          <ViewerMarkdown value={user?.description} />
+          <ViewerMarkdown value={description} />
         </div>
       )) || (
         <div className="mt-2">
@@ -99,8 +101,9 @@ function RenderDescription(user?: User): JSX.Element {
                     <FormControl>
                       <MarkdownEditor
                         {...field}
-                        value={`${field?.value}`}
+                        value={`${description}`}
                         onChange={($event: string) => {
+                          setDescription($event);
                           form.setValue("description", $event);
                         }}
                       />
@@ -116,6 +119,7 @@ function RenderDescription(user?: User): JSX.Element {
                   type="reset"
                   onClick={() => {
                     setShowEditor(false);
+                    setDescription(user?.description as string);
                   }}
                 >
                   Cancelar
