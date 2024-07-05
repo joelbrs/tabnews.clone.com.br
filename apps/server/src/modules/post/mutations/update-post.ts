@@ -3,8 +3,11 @@ import { mutationWithClientMutationId } from "graphql-relay";
 import { Context } from "koa";
 import { CreatePostInput } from "./create-post";
 import { Post } from "../post-model";
-import { EntityNotFoundException, UnauthorizedException } from "@/exceptions";
-import { validateJwt } from "@/validation";
+import {
+  EntityNotFoundException,
+  UnauthorizedException,
+} from "../../../exceptions";
+import { validateJwt } from "../../../validation";
 import { PostTypeGQL } from "../post-type";
 
 export type UpdatePostInput = Omit<CreatePostInput, "creatorId"> & {

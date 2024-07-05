@@ -1,6 +1,5 @@
 import { randomUUID } from "node:crypto";
 import { Document, Model, Schema, model } from "mongoose";
-import { User } from "../user";
 
 export interface IPost extends Document {
   title: string;

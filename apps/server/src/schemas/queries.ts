@@ -1,4 +1,4 @@
-import { PostsQueries, UserQuery } from "@/modules";
+import { PostsQueries, UserQuery } from "../modules";
 import { GraphQLObjectType } from "graphql";
 
 export const QueryType = new GraphQLObjectType({

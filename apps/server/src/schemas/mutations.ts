@@ -1,5 +1,4 @@
-import { UserMutations } from "@/modules";
-import { PostMutations } from "@/modules/post";
+import { UserMutations, PostMutations } from "../modules";
 import { GraphQLObjectType } from "graphql";
 
 export const MutationType = new GraphQLObjectType({

@@ -1,7 +1,10 @@
 import { GraphQLNonNull, GraphQLString } from "graphql";
 import { mutationWithClientMutationId } from "graphql-relay";
 import { User } from "../user-model";
-import { EntityNotFoundException, UnauthorizedException } from "@/exceptions";
+import {
+  EntityNotFoundException,
+  UnauthorizedException,
+} from "../../../exceptions";
 
 export type LoginUserDtoIn = {
   email: string;

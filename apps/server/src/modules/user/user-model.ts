@@ -1,6 +1,6 @@
 import { Document, Model, Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
-import { env } from "@/config";
+import { env } from "../../config";
 import { sign } from "jsonwebtoken";
 
 export interface IUser extends Document {

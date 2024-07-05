@@ -3,8 +3,8 @@ import { mutationWithClientMutationId } from "graphql-relay";
 import { IPost, Post } from "../post-model";
 import { Context } from "koa";
 import { PostTypeGQL } from "../post-type";
-import { validateJwt } from "@/validation";
-import { User } from "@/modules/user";
+import { validateJwt } from "../../../validation";
+import { User } from "../../../modules/user";
 
 export type CreatePostInput = Pick<
   IPost,

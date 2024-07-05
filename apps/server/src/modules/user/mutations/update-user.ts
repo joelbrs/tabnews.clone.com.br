@@ -3,7 +3,7 @@ import { mutationWithClientMutationId } from "graphql-relay";
 import { UserTypeGQL } from "../user-type";
 import { Context } from "koa";
 import { IUser, User } from "../user-model";
-import { validateJwt } from "@/validation";
+import { validateJwt } from "../../../validation";
 
 export type UpdateUserDtoIn = Pick<
   IUser,
