@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "tsx watch ./src/index.ts",
+    "build": "rm -rf dist && tsup src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -35,6 +36,7 @@
     "koa-graphql": "^0.12.0",
     "koa-router": "^12.0.1",
     "mongoose": "^8.4.4",
+    "tsup": "^8.1.0",
     "zod": "^3.23.8"
   }
 }
