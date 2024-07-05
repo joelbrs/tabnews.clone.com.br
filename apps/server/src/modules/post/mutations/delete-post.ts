@@ -4,6 +4,8 @@ import { Context } from "koa";
 import { Post } from "../post-model";
 import { EntityNotFoundException, UnauthorizedException } from "@/exceptions";
 import { validateJwt } from "@/validation";
+import { User } from "@/modules/user";
+import { DEFAULT_TABCOINS_WHEN_POST_IS_CREATED } from "./create-post";
 
 export type DeletePostInput = {
   slug: string;
@@ -30,6 +32,16 @@ export const DeletePostMutation = mutationWithClientMutationId({
     }
 
     await Post.deleteOne({ slug });
+
+    const creator = await User.findById(subId);
+
+    if (creator) {
+      if (post.tabcoins >= 1) {
+        creator.tabcoins -=
+          post.tabcoins - DEFAULT_TABCOINS_WHEN_POST_IS_CREATED - 1;
+        await creator.save();
+      }
+    }
 
     return {
       success: true,
