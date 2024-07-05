@@ -19,6 +19,7 @@
     "@bytemd/plugin-mermaid": "^1.21.0",
     "@bytemd/react": "^1.21.0",
     "@hookform/resolvers": "^3.6.0",
+    "@radix-ui/react-dialog": "^1.1.1",
     "@repo/ui": "workspace:*",
     "bytemd": "^1.21.0",
     "lucide-react": "^0.399.0",

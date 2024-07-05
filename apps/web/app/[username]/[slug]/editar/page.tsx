@@ -14,7 +14,7 @@ import {
 } from "@repo/ui/components";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MarkdownEditor, Footer } from "../../../../components";
+import { MarkdownEditor, Footer, DialogConfirm } from "../../../../components";
 import { usePathname, useRouter } from "next/navigation";
 import { useMutation } from "react-relay";
 import { UpdatePostMutation } from "../../../../graphql";
@@ -161,16 +161,17 @@ export default function EditarPostPage(): JSX.Element {
             </span>
 
             <div className="w-full flex justify-end gap-3">
-              <Button
-                className="mt-3 h-8 px-8"
-                variant="ghost"
-                type="reset"
-                onClick={() => {
-                  router.push("/");
+              <DialogConfirm
+                description="Os dados não salvos serão perdidos."
+                title="Tem certeza que deseja sair da edição?"
+                onConfirm={() => {
+                  router.push(pathname?.replace("/editar", ""));
                 }}
               >
-                Cancelar
-              </Button>
+                <Button className="mt-3 h-8 px-8" variant="ghost" type="reset">
+                  Cancelar
+                </Button>
+              </DialogConfirm>
               <Button
                 className="mt-3 bg-green-700 hover:bg-green-800 text-white h-8 px-8"
                 type="submit"
@@ -183,7 +184,6 @@ export default function EditarPostPage(): JSX.Element {
           </form>
         </Form>
       </section>
-
       <Footer className="w-[62vw]" />
     </main>
   );
