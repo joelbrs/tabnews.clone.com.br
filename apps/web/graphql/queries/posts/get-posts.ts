@@ -10,7 +10,7 @@ export interface Post {
   description: string;
   user: PostCreator;
   font?: string;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export const GetPostsQuery = graphql`

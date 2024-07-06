@@ -14,7 +14,7 @@ import VotePost from "../../../components/vote-post";
 import Link from "next/link";
 import { DropdownMenuItem, Skeleton, useToast } from "@repo/ui/components";
 import { Pencil, Trash2 } from "lucide-react";
-import { useAuth } from "../../../hooks";
+import { useAuth, useTime } from "../../../hooks";
 import { getPost } from "./get-post";
 import { useMutation } from "react-relay";
 
@@ -24,10 +24,11 @@ export default function PostPage(): JSX.Element {
   const [isLoggedUser, setIsLoggedUser] = useState(false);
   const [key, setKey] = useState(0);
 
-  const { toast } = useToast();
   const auth = useAuth();
+  const time = useTime()
   const router = useRouter();
   const pathname = usePathname();
+  const { toast } = useToast();
 
   const [request] = useMutation(DeletePostMutation);
 
@@ -78,12 +79,17 @@ export default function PostPage(): JSX.Element {
         </div>
         <div className="flex flex-col items-center justify-center sm:w-[55vw]">
           <div className="flex items-center justify-between gap-2 self-start px-2 text-xs mb-1 w-full">
-            {!isLoading && <Link
-              href={`/${post?.user.username}`}
-              className="self-start px-3 py-0.5 rounded-md text-blue-500 font-mono dark:bg-[#121D2F] bg-cyan-100 hover:underline hover:cursor-pointer"
-            >
-              {post?.user.username}
-            </Link> || <Skeleton className="h-4 w-[80px]"/>}
+            {!isLoading && <div className="space-x-2">
+              <Link
+                href={`/${post?.user.username}`}
+                className="self-start px-3 py-0.5 rounded-md text-blue-500 font-mono dark:bg-[#121D2F] bg-cyan-100 hover:underline hover:cursor-pointer"
+              >
+                {post?.user.username}
+              </Link>
+              <span>·</span>
+              <span>{time.timeFromNow(post?.createdAt)}</span>
+            </div>
+             || <Skeleton className="h-4 w-[80px]"/>}
 
             {isLoggedUser && (
               <MenuActions>

@@ -132,6 +132,9 @@ importers:
       bytemd:
         specifier: ^1.21.0
         version: 1.21.0
+      dayjs:
+        specifier: ^1.11.11
+        version: 1.11.11
       lucide-react:
         specifier: ^0.399.0
         version: 0.399.0(react@19.0.0-rc-f994737d14-20240522)
