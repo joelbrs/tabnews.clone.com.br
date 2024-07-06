@@ -9,7 +9,7 @@ export function Footer({ className }: { className: string }): JSX.Element {
   const { theme } = useTheme();
 
   return (
-    <div className="flex flex-col justify-center items-center sm:gap-8 gap-6 w-full mb-8">
+    <div className={"flex flex-col justify-center items-center sm:gap-8 gap-6 w-full mb-8"}>
       <Separator className={`sm:${className} w-[95vw]`} />
 
       <footer
