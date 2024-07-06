@@ -13,7 +13,7 @@ import { ProfileTab } from "./_profile-tab";
 import { PublishesTab } from "./_publishes-tab";
 import { Settings, User as UserIcon } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { DropdownMenuItem } from "@repo/ui/components";
+import { DropdownMenuItem, Skeleton } from "@repo/ui/components";
 
 function RenderEditProfile(
   router: AppRouterInstance,
@@ -44,6 +44,7 @@ export default function PerfilPage(): JSX.Element {
   const [user, setUser] = useState<User>();
   const [tab, setTab] = useState(0);
   const [key, setKey] = useState(0);
+  const [isLoading, setIsLoading] = useState(true)
 
   const auth = useAuth();
   const router = useRouter();
@@ -55,6 +56,7 @@ export default function PerfilPage(): JSX.Element {
       const data = await fetchQuery(environment, GetUserPostsQuery, {
         username: pathname?.replace("/", ""),
       }).toPromise();
+      setIsLoading(false)
 
       const { edges } = (data as getUserPostsQuery$data).GetUser;
       const user = Array.isArray(edges) && edges[0].node;
@@ -74,7 +76,8 @@ export default function PerfilPage(): JSX.Element {
     <main className="flex flex-col items-center gap-10 pt-8 pb-3.5">
       <div className="sm:w-[60vw] w-full px-2 space-y-3">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold mb-2">{user?.username}</h1>
+          {!isLoading && <h1 className="text-3xl font-bold mb-2">{user?.username}</h1> ||
+          <Skeleton className="h-8 w-[80px]" />}
 
           {RenderEditProfile(router, auth.isLoggedUser(user?.id))}
         </div>
@@ -104,7 +107,7 @@ export default function PerfilPage(): JSX.Element {
             <ProfileTab user={user} />
           </TabPanel>
           <TabPanel>
-            <PublishesTab user={user} />
+            <PublishesTab user={user} loading={isLoading}/>
           </TabPanel>
           <TabPanel>
             <div className="flex flex-col gap-2 items-center justify-center mt-10">

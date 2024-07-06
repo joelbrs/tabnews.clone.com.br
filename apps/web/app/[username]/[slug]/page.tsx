@@ -12,21 +12,23 @@ import {
 } from "../../../components";
 import VotePost from "../../../components/vote-post";
 import Link from "next/link";
-import { DropdownMenuItem, useToast } from "@repo/ui/components";
+import { DropdownMenuItem, Skeleton, useToast } from "@repo/ui/components";
 import { Pencil, Trash2 } from "lucide-react";
-import { useAuth } from "../../../hooks";
+import { useAuth, useTime } from "../../../hooks";
 import { getPost } from "./get-post";
 import { useMutation } from "react-relay";
 
 export default function PostPage(): JSX.Element {
   const [post, setPost] = useState<Post>();
+  const [isLoading, setIsLoading] = useState(true)
   const [isLoggedUser, setIsLoggedUser] = useState(false);
   const [key, setKey] = useState(0);
 
-  const { toast } = useToast();
   const auth = useAuth();
+  const time = useTime()
   const router = useRouter();
   const pathname = usePathname();
+  const { toast } = useToast();
 
   const [request] = useMutation(DeletePostMutation);
 
@@ -35,12 +37,17 @@ export default function PostPage(): JSX.Element {
       const [_, __, slug] = pathname.split("/");
 
       const post = await getPost(slug);
+      setIsLoading(false)
 
       if (auth.isLoggedUser(post?.user.id)) {
         setIsLoggedUser(true);
       }
 
       setPost(post);
+      if (post?.font) {
+        setPost({...post, description: post.description?.concat(`#### Fonte: ${post.font}`)});
+      }
+
       setKey(key + 1);
     }
 
@@ -65,17 +72,24 @@ export default function PostPage(): JSX.Element {
   };
 
   return (
-    <main className="space-y-10">
+    <main className="space-y-10 pb-10">
       <section className="flex items-start justify-center my-6">
-        <VotePost post={post} key={key} />
+        <div className="flex items-center flex-col">
+          <VotePost post={post} key={key} loading={isLoading}/>
+        </div>
         <div className="flex flex-col items-center justify-center sm:w-[55vw]">
           <div className="flex items-center justify-between gap-2 self-start px-2 text-xs mb-1 w-full">
-            <Link
-              href={`/${post?.user.username}`}
-              className="self-start px-3 py-0.5 rounded-md text-blue-500 font-mono dark:bg-[#121D2F] bg-cyan-100 hover:underline hover:cursor-pointer"
-            >
-              {post?.user.username}
-            </Link>
+            {!isLoading && <div className="space-x-2">
+              <Link
+                href={`/${post?.user.username}`}
+                className="self-start px-3 py-0.5 rounded-md text-blue-500 font-mono dark:bg-[#121D2F] bg-cyan-100 hover:underline hover:cursor-pointer"
+              >
+                {post?.user.username}
+              </Link>
+              <span>·</span>
+              <span>{time.timeFromNow(post?.createdAt)}</span>
+            </div>
+             || <Skeleton className="h-4 w-[80px]"/>}
 
             {isLoggedUser && (
               <MenuActions>
@@ -108,12 +122,17 @@ export default function PostPage(): JSX.Element {
             )}
           </div>
           <div className="flex flex-col items-center justify-start gap-3">
-            <h1 className="text-3xl font-medium self-start px-2 mb-1 leading-relaxed sm:leading-normal">
+            {!isLoading && <h1 className="text-3xl font-medium self-start px-2 mb-1 leading-relaxed sm:leading-normal">
               {post?.title}
-            </h1>
+            </h1> || 
+            <div className="space-y-1">
+              <Skeleton className="h-4 w-[92vw] sm:w-[1040px]"/>
+              <Skeleton className="h-4 w-[42vw] sm:w-[350px]"/>
+            </div>
+            }
 
             <div className="justify-center pr-5 pl-2 sm:w-[55vw]">
-              <ViewerMarkdown value={post?.description || ""} />
+              <ViewerMarkdown value={post?.description || ""} loading={isLoading}/>
             </div>
           </div>
         </div>

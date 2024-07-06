@@ -12,5 +12,6 @@ export const getPost = async (slug?: string) => {
   const { edges } = (data as getPostsQuery$data).GetPosts;
 
   const post = Array.isArray(edges) ? edges[0].node : undefined;
+  console.log(post);
   return post as Post;
 };
