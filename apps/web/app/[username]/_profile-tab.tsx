@@ -149,7 +149,7 @@ export function ProfileTab({ user }: Props): JSX.Element {
       <section className="flex items-start flex-wrap sm:justify-start text-xs sm:text-sm gap-5">
         <div className="flex items-center gap-1 sm:text-sm sm:font-medium text-lg">
           <div className="bg-blue-700 w-2 h-2 rounded-[2px]" title="TabCoins" />
-          <span>{user?.tabcoins}</span>
+          <span>{user?.tabcoins || 0}</span>
           <span>TabCoins</span>
         </div>
         <div className="flex items-center gap-1 sm:text-sm sm:font-medium text-lg">

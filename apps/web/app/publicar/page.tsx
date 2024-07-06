@@ -137,7 +137,7 @@ export default function PublicarPage(): JSX.Element {
               control={form.control}
               name="font"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="pt-16 sm:pt-0">
                   <Label>Fonte</Label>
                   <FormControl>
                     <Input

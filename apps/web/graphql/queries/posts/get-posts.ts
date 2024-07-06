@@ -15,7 +15,7 @@ export interface Post {
 export const GetPostsQuery = graphql`
   query getPostsQuery(
     $page: Int = 0
-    $limit: Int = 30
+    $limit: Int = 10
     $slug: String
     $relevants: Boolean = false
   ) {

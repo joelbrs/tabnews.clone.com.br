@@ -10,10 +10,12 @@ import breaks from "@bytemd/plugin-breaks";
 import locale from "bytemd/locales/pt.json";
 
 import { Editor, Viewer } from "@bytemd/react";
+import { Separator, Skeleton } from "@repo/ui/components";
 
 interface Props {
   value: string;
   onChange?: Function;
+  loading?: boolean
 }
 
 const plugins = [
@@ -29,8 +31,31 @@ const plugins = [
   breaks(),
 ];
 
-export function ViewerMarkdown({ value }: Props): JSX.Element {
-  return <Viewer value={value} plugins={plugins} />;
+export function ViewerMarkdown({ value, loading }: Props): JSX.Element {
+  const skeleton = () => (
+    <>
+      <div className="space-y-2 mt-2">
+        <div className="space-y-1">
+          <Skeleton className="h-5 w-[88vw] sm:w-[1040px]" />
+          <Skeleton className="h-5 w-[30vw] sm:w-[280px]" />
+        </div>
+        <Separator />
+      </div>
+      <div className="space-y-2 mt-4">
+        {
+          Array.from({ length: 7 }, (_, index) => (
+            <div className="space-y-2" key={index}>
+              <Skeleton className="h-4 w-[40vw]" />
+              <Skeleton className="h-4 w-[55vw] sm:w-[880px]" />
+              <Skeleton className="h-4 w-[88vw] sm:w-[1040px]" />
+            </div>
+          ))
+        }
+      </div>
+    </>
+  )
+
+  return loading && skeleton() || <Viewer value={value} plugins={plugins} />;
 }
 
 export function MarkdownEditor({ value, onChange }: Props): JSX.Element {

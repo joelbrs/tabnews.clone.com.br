@@ -10,9 +10,10 @@ import { fetchMutation } from "../relay";
 
 export interface Props {
   post?: Post;
+  loading?: boolean
 }
 
-export default function VotePost({ post }: Props): JSX.Element {
+export default function VotePost({ post, loading }: Props): JSX.Element {
   const [tabcoins, setTabcoins] = useState(post?.tabcoins);
   const [request] = useMutation(VotePostMutation);
 
@@ -38,15 +39,17 @@ export default function VotePost({ post }: Props): JSX.Element {
         variant="ghost"
         className="p-2"
         title="Achei relevante"
+        disabled={loading}
         onClick={() => onVote(VoteTypeEnum.UPVOTE)}
       >
         <ChevronUp className="text-muted-foreground w-4 h-4" />
       </Button>
-      <span className="text-blue-500 font-medium text-sm">{tabcoins}</span>
+      <span className="text-blue-500 font-medium text-sm">{tabcoins || 0}</span>
       <Button
         variant="ghost"
         className="p-2"
         title="Não achei relevante"
+        disabled={loading}
         onClick={() => onVote(VoteTypeEnum.DOWNVOTE)}
       >
         <ChevronDown className="text-muted-foreground w-4 h-4" />

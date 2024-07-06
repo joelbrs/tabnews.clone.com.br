@@ -6,9 +6,11 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { useRouter } from "next/navigation";
 import PublishCard from "../../components/publish-card";
 import { User as IUser, useAuth } from "../../hooks";
+import { PublishCardSkeleton } from "../../components";
 
 interface Props {
   user?: IUser;
+  loading?: boolean
 }
 
 function RenderPublishesNotFound(
@@ -46,7 +48,7 @@ function RenderPublishesNotFound(
   );
 }
 
-export function PublishesTab({ user }: Props): JSX.Element {
+export function PublishesTab({ user, loading }: Props): JSX.Element {
   const router = useRouter();
 
   return (
@@ -54,7 +56,10 @@ export function PublishesTab({ user }: Props): JSX.Element {
       {!user?.posts ||
         (!user.posts.length && RenderPublishesNotFound(router, user)) || (
           <div className="space-y-2">
-            <PublishCard posts={user.posts} />
+            {/* <PublishCard posts={user.posts} /> */}
+            {(!loading && <PublishCard posts={user.posts} />) || (
+              <PublishCardSkeleton />
+            )}
           </div>
         )}
     </>
