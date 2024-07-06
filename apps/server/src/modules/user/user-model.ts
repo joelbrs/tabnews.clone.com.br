@@ -8,8 +8,8 @@ export interface IUser extends Document {
   email?: string;
   description?: string;
   password: string;
-  created_at: Date;
-  updated_at: Date;
+  createdAt: Date;
+  updatedAt: Date;
   notify: boolean;
   tabcoins: number;
 
@@ -42,11 +42,11 @@ const UserSchema = new Schema<IUser, UserModel>(
       minlength: 8,
       required: true,
     },
-    created_at: {
+    createdAt: {
       type: Date,
       default: new Date(),
     },
-    updated_at: {
+    updatedAt: {
       type: Date,
       default: new Date(),
     },
