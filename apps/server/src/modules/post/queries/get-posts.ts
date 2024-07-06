@@ -5,7 +5,8 @@ import {
   connectionDefinitions,
   connectionFromArray,
 } from "graphql-relay";
-import { Post, PostTypeGQL } from "..";
+import { IPost, Post, PostTypeGQL } from "..";
+import { mapPostDtoOut } from "../utils";
 
 type GetPostsDtoIn = {
   page?: number;
@@ -48,7 +49,8 @@ export const GetPostsQuery = {
     let posts;
 
     if (slug) {
-      posts = await Post.findOne({ slug });
+      const model = await Post.findOne({ slug });
+      posts = mapPostDtoOut(model as IPost);
       return connectionFromArray([posts], args as ConnectionArguments);
     }
 
@@ -60,6 +62,8 @@ export const GetPostsQuery = {
       .limit(limit)
       .skip(skip)
       .sort(relevants ? { tabcoins: -1, createdAt: -1 } : { createdAt: -1 });
+
+    posts = posts?.map((item) => mapPostDtoOut(item as IPost));
 
     const connection = connectionFromArray(posts, args as ConnectionArguments);
 

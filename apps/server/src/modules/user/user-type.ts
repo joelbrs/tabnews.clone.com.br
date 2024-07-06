@@ -8,6 +8,7 @@ import {
 } from "graphql";
 import { IUser } from "./user-model";
 import { Post, PostTypeGQL } from "../post";
+import { mapPostDtoOut } from "../post/utils";
 
 export const UserTypeGQL = new GraphQLObjectType<IUser>({
   name: "User",
@@ -54,7 +55,7 @@ export const UserTypeGQL = new GraphQLObjectType<IUser>({
       description: "Represents user's post",
       resolve: async ({ _id: creatorId }) => {
         const posts = await Post.find({ creatorId });
-        return posts;
+        return posts?.map((item) => mapPostDtoOut(item));
       },
     },
   }),
