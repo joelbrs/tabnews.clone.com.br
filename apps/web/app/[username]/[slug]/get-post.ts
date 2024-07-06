@@ -12,5 +12,9 @@ export const getPost = async (slug?: string) => {
   const { edges } = (data as getPostsQuery$data).GetPosts;
 
   const post = Array.isArray(edges) ? edges[0].node : undefined;
-  return post as Post;
+
+  return {
+    ...post,
+    createdAt: post && new Date(+post.createdAt),
+  };
 };
