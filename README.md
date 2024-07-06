@@ -1,81 +1,38 @@
-# Turborepo starter
+# Tabnews Clone
 
-This is an official starter Turborepo.
+Este é um clone do Tabnews do Filipe Deschamps. O projeto foi desenvolvido com as seguintes tecnologias:
 
-## Using this example
+## Stack
 
-Run the following command:
+### Frontend
+- **Next.js**: Framework React que facilita a criação de aplicativos web rápidos e escaláveis.
+- **Tailwind CSS**: Biblioteca CSS utilitária que permite estilizar componentes de forma eficiente.
+- **Chakra UI**: Biblioteca de componentes React com foco em acessibilidade e design.
+- **TypeScript**: Linguagem de programação tipada que melhora a manutenção e a segurança do código.
+- **Relay**: Biblioteca GraphQL para gerenciamento de estado no frontend.
 
-```sh
-npx create-turbo@latest
-```
+### Backend
+- **Koa**
+- **Node.js**
+- **GraphQL**
+- **MongoDB**
 
-## What's inside?
+## Funcionalidades
 
-This Turborepo includes the following packages/apps:
+1. **Listagem de Publicações**: Exibe uma lista de publicações, podendo ser filtrada por relevantes ou recentes, com tabcoins, quantidade de comentários, username do autor e quando foi criada.
+2. **Detalhes da Publicação**: Permite visualizar os detalhes completos de uma publicação específica.
+3. **Atualização da Publicação**: Os usuários conseguem atualizar o conteúdo de suas publicações.
+4. **Exclusão de Publicação**: Os usuários conseguem excluir uma publicação.
+5. **Autenticação**: Suporte para autenticação de usuários.
+6. **Atualização de Perfil**: Os usuários conseguem atualizar as informações de seu perfil.
+7. **Paginação**: Divide as notícias em páginas para facilitar a navegação.
+8. **Transações Tabcoins**: Os usuários podem votar em publicações e receber ou gastar Tabcoins.
+9. **Markdown**: Os usuários escrevem as postagens por meio de um editor Markdown, assim como para visualização dos posts.
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+### Como funcionam as transações de Tabcoins:
+1. **Cadastro de Usuário**: Ao se cadastrar, o usuário é criado com 5 Tabcoins.
+2. **Criação de Publicação**: Ao criar uma publicação, 5 Tabcoins são acrescidas do saldo do autor e 1 Tabcoin é acrescida do saldo da publicação.
+3. **Relevância de Publicações**: Os usuários podem usar suas Tabcoins para votar na relevância (positiva ou negativa) de publicações (com exceção das suas próprias) e, para isso:
+   - 2 Tabcoins são descontadas de seu saldo.
+   - Caso o voto seja positivo, 1 Tabcoin é acrescido do saldo da publicação e 1 Tabcoin do saldo do autor; caso contrário, 1 Tabcoin será decrescida.
+4. **Exclusão de Publicação**: Ao excluir uma publicação, o usuário perde **TODAS** as Tabcoins que ganhou com o post.
